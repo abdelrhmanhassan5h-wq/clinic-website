@@ -1,0 +1,1402 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: Arial, Tahoma, sans-serif;
+  background: #f7fafc;
+  color: #1f2937;
+  direction: rtl;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+button,
+input,
+select {
+  font-family: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+/* =========================
+   NAVBAR
+========================= */
+
+.navbar {
+  width: 100%;
+  min-height: 80px;
+  background: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 15px 7%;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  box-shadow: 0 2px 15px rgba(0, 0, 0, 0.06);
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.logo > span {
+  width: 45px;
+  height: 45px;
+  background: #0d6efd;
+  color: white;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 25px;
+  font-weight: bold;
+}
+
+.logo h2 {
+  font-size: 18px;
+  color: #172554;
+  margin-bottom: 3px;
+}
+
+.logo small {
+  color: #64748b;
+  font-size: 11px;
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+}
+
+.nav-links a {
+  color: #475569;
+  font-size: 15px;
+  transition: 0.3s;
+}
+
+.nav-links a:hover {
+  color: #0d6efd;
+}
+
+.nav-btn {
+  border: none;
+  background: #0d6efd;
+  color: white;
+  padding: 12px 22px;
+  border-radius: 10px;
+  font-size: 14px;
+}
+
+.mobile-menu {
+  display: none;
+  border: none;
+  background: transparent;
+  font-size: 25px;
+}
+
+/* =========================
+   HERO
+========================= */
+
+.hero {
+  min-height: 650px;
+  padding: 80px 8%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 60px;
+  background: linear-gradient(
+    135deg,
+    #f1f7ff 0%,
+    #ffffff 100%
+  );
+}
+
+.hero-content {
+  max-width: 650px;
+}
+
+.badge {
+  display: inline-block;
+  background: #e8f2ff;
+  color: #0d6efd;
+  padding: 8px 16px;
+  border-radius: 30px;
+  font-size: 14px;
+  margin-bottom: 20px;
+}
+
+.hero h1 {
+  font-size: 55px;
+  line-height: 1.25;
+  color: #172554;
+  margin-bottom: 20px;
+}
+
+.hero h1 span {
+  color: #0d6efd;
+}
+
+.hero-content > p {
+  color: #64748b;
+  font-size: 17px;
+  line-height: 2;
+  max-width: 600px;
+  margin-bottom: 30px;
+}
+
+.hero-buttons {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 40px;
+}
+
+.primary-btn,
+.secondary-btn {
+  border: none;
+  padding: 14px 25px;
+  border-radius: 11px;
+  font-size: 15px;
+  transition: 0.3s;
+}
+
+.primary-btn {
+  background: #0d6efd;
+  color: white;
+}
+
+.primary-btn:hover {
+  background: #0957c7;
+  transform: translateY(-2px);
+}
+
+.secondary-btn {
+  background: white;
+  color: #0d6efd;
+  border: 1px solid #d9e6f5;
+}
+
+.stats {
+  display: flex;
+  gap: 45px;
+}
+
+.stats div {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.stats strong {
+  font-size: 25px;
+  color: #0d6efd;
+}
+
+.stats span {
+  color: #64748b;
+  font-size: 13px;
+}
+
+.hero-card {
+  width: 360px;
+  background: white;
+  padding: 35px;
+  border-radius: 25px;
+  box-shadow: 0 20px 50px rgba(13, 110, 253, 0.12);
+}
+
+.medical-icon {
+  width: 65px;
+  height: 65px;
+  border-radius: 18px;
+  background: #eaf3ff;
+  color: #0d6efd;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 35px;
+  margin-bottom: 20px;
+}
+
+.hero-card h3 {
+  font-size: 23px;
+  margin-bottom: 10px;
+}
+
+.hero-card > p {
+  color: #64748b;
+  margin-bottom: 25px;
+}
+
+.card-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 15px 0;
+}
+
+.card-item span {
+  width: 25px;
+  height: 25px;
+  background: #e8f8ef;
+  color: #16a34a;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.card-item p {
+  color: #475569;
+}
+
+/* =========================
+   SECTIONS
+========================= */
+
+.services,
+.doctors-section,
+.booking-section,
+.results-section,
+.contact-section {
+  padding: 90px 8%;
+}
+
+.section-label {
+  display: inline-block;
+  color: #0d6efd;
+  font-size: 14px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.services > h2,
+.doctors-section > h2,
+.booking-section > h2,
+.contact-section > h2 {
+  font-size: 35px;
+  color: #172554;
+  margin-bottom: 45px;
+}
+
+/* =========================
+   SPECIALTIES
+========================= */
+
+.services {
+  background: #ffffff;
+  text-align: center;
+}
+
+.service-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  max-width: 1200px;
+  margin: auto;
+}
+
+.service-card {
+  background: #f8fbff;
+  padding: 30px 20px;
+  border-radius: 18px;
+  border: 1px solid #edf2f7;
+  transition: 0.3s;
+}
+
+.service-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
+}
+
+.service-card > div {
+  font-size: 35px;
+  margin-bottom: 15px;
+}
+
+.service-card h3 {
+  margin-bottom: 10px;
+  color: #172554;
+}
+
+.service-card p {
+  color: #64748b;
+  font-size: 13px;
+  line-height: 1.7;
+}
+
+/* =========================
+   DOCTORS
+========================= */
+
+.doctors-section {
+  background: #f7fafc;
+  text-align: center;
+}
+
+.doctor-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 25px;
+}
+
+.doctor-card {
+  background: white;
+  padding: 20px;
+  border-radius: 20px;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+}
+
+.doctor-image {
+  width: 100%;
+  height: 230px;
+  border-radius: 15px;
+  overflow: hidden;
+  background: #e9eef5;
+  margin-bottom: 18px;
+}
+
+.doctor-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.doctor-card h3 {
+  color: #172554;
+  margin-bottom: 8px;
+}
+
+.doctor-card > p {
+  color: #0d6efd;
+  margin-bottom: 15px;
+}
+
+.doctor-card button {
+  width: 100%;
+  border: none;
+  background: #eaf3ff;
+  color: #0d6efd;
+  padding: 11px;
+  border-radius: 10px;
+  font-size: 14px;
+}
+
+/* =========================
+   BOOKING
+========================= */
+
+.booking-section {
+  background: white;
+  text-align: center;
+}
+
+.booking-form {
+  max-width: 700px;
+  margin: auto;
+  background: #f8fafc;
+  padding: 35px;
+  border-radius: 22px;
+  text-align: right;
+  box-shadow: 0 10px 35px rgba(0, 0, 0, 0.05);
+}
+
+.form-group {
+  margin-bottom: 18px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  color: #334155;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.form-group input,
+.form-group select {
+  width: 100%;
+  height: 50px;
+  padding: 0 15px;
+  border: 1px solid #dce3eb;
+  border-radius: 10px;
+  background: white;
+  outline: none;
+  font-size: 14px;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+  border-color: #0d6efd;
+}
+
+.form-group select:disabled {
+  background: #eef1f5;
+  cursor: not-allowed;
+}
+
+.booking-submit {
+  width: 100%;
+  margin-top: 10px;
+}
+
+/* =========================
+   BOOKING SUCCESS
+========================= */
+
+.booking-success {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding: 20px 10px;
+}
+
+.queue-card {
+  width: 100%;
+  max-width: 520px;
+  background: white;
+  border-radius: 24px;
+  padding: 30px;
+  text-align: center;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e8eef5;
+}
+
+.queue-icon {
+  width: 65px;
+  height: 65px;
+  margin: 0 auto 12px;
+  border-radius: 50%;
+  background: #e9f8ef;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 30px;
+}
+
+.success-title {
+  margin: 5px 0 22px;
+  font-size: 22px;
+  font-weight: bold;
+  color: #1f2937;
+}
+
+.queue-number {
+  width: 100%;
+  background: #f3f8ff;
+  border: 2px solid #dcecff;
+  border-radius: 18px;
+  padding: 18px;
+  margin-bottom: 22px;
+}
+
+.queue-number span {
+  display: block;
+  font-size: 15px;
+  color: #64748b;
+  margin-bottom: 5px;
+}
+
+.queue-number strong {
+  display: block;
+  font-size: 46px;
+  line-height: 1.1;
+  color: #0d6efd;
+  font-weight: 800;
+}
+
+.appointment-details {
+  width: 100%;
+  background: #f8fafc;
+  border-radius: 16px;
+  padding: 15px 18px;
+  margin-bottom: 18px;
+  text-align: right;
+}
+
+.appointment-details p {
+  margin: 9px 0;
+  font-size: 14px;
+  line-height: 1.5;
+  color: #374151;
+}
+
+.booking-warning {
+  width: 100%;
+  background: #fff8e6;
+  border: 1px solid #ffe2a8;
+  border-radius: 15px;
+  padding: 15px;
+  margin-bottom: 22px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.booking-warning strong {
+  font-size: 14px;
+  color: #9a6700;
+}
+
+.booking-warning span {
+  font-size: 13px;
+  color: #795900;
+  line-height: 1.6;
+}
+
+.queue-card > .primary-btn {
+  width: 100%;
+  max-width: 300px;
+}
+
+/* =========================
+   RESULTS
+========================= */
+
+.results-section {
+  background: #eef6ff;
+}
+
+.results-box {
+  max-width: 800px;
+  margin: auto;
+  text-align: center;
+  background: white;
+  padding: 50px 35px;
+  border-radius: 25px;
+  box-shadow: 0 10px 35px rgba(0, 0, 0, 0.05);
+}
+
+.results-box h2 {
+  font-size: 32px;
+  color: #172554;
+  margin-bottom: 15px;
+}
+
+.results-box > p {
+  color: #64748b;
+  margin-bottom: 25px;
+}
+
+.result-search {
+  display: flex;
+  gap: 10px;
+  max-width: 600px;
+  margin: auto;
+}
+
+.result-search input {
+  flex: 1;
+  height: 50px;
+  border: 1px solid #dce3eb;
+  border-radius: 10px;
+  padding: 0 15px;
+  outline: none;
+}
+
+.result-search button {
+  min-width: 110px;
+}
+
+/* =========================
+   FOOTER / CONTACT
+========================= */
+
+footer {
+  background: #0f172a;
+  color: white;
+  text-align: center;
+}
+
+.contact-section {
+  background: #0f172a;
+}
+
+.contact-section > h2 {
+  color: white;
+}
+
+.contact-grid {
+  max-width: 850px;
+  margin: auto;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+
+.contact-card {
+  background: #172033;
+  padding: 30px;
+  border-radius: 18px;
+}
+
+.contact-icon {
+  font-size: 30px;
+  margin-bottom: 12px;
+}
+
+.contact-card h3 {
+  margin-bottom: 8px;
+}
+
+.contact-card p {
+  color: #94a3b8;
+  margin-bottom: 10px;
+}
+
+.contact-card a {
+  color: #60a5fa;
+}
+
+.map-btn {
+  display: inline-block;
+  margin-top: 8px;
+}
+
+.map-container {
+  max-width: 1000px;
+  height: 350px;
+  margin: 30px auto 0;
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+.map-container iframe {
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+footer > h3 {
+  margin-top: 30px;
+  margin-bottom: 8px;
+}
+
+footer > p {
+  color: #94a3b8;
+  margin-bottom: 10px;
+}
+
+footer > small {
+  display: block;
+  color: #64748b;
+  padding-bottom: 25px;
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width: 900px) {
+
+  .navbar {
+    padding: 12px 5%;
+  }
+
+  .nav-links {
+    display: none;
+  }
+
+  .mobile-menu {
+    display: block;
+  }
+
+  .navbar > a {
+    display: none;
+  }
+
+  .hero {
+    flex-direction: column;
+    text-align: center;
+    padding: 60px 5%;
+  }
+
+  .hero-content {
+    max-width: 100%;
+  }
+
+  .hero h1 {
+    font-size: 40px;
+  }
+
+  .hero-buttons {
+    justify-content: center;
+  }
+
+  .stats {
+    justify-content: center;
+    gap: 25px;
+  }
+
+  .hero-card {
+    width: 100%;
+    max-width: 420px;
+  }
+
+  .service-grid,
+  .doctor-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+
+  .services,
+  .doctors-section,
+  .booking-section,
+  .results-section,
+  .contact-section {
+    padding: 60px 5%;
+  }
+
+  .hero {
+    min-height: auto;
+    padding: 50px 5%;
+  }
+
+  .hero h1 {
+    font-size: 32px;
+  }
+
+  .hero-content > p {
+    font-size: 15px;
+  }
+
+  .hero-buttons {
+    flex-direction: column;
+  }
+
+  .hero-buttons a,
+  .hero-buttons button {
+    width: 100%;
+  }
+
+  .stats {
+    gap: 15px;
+    flex-wrap: wrap;
+  }
+
+  .service-grid,
+  .doctor-grid,
+  .contact-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .services > h2,
+  .doctors-section > h2,
+  .booking-section > h2,
+  .contact-section > h2 {
+    font-size: 28px;
+  }
+
+  .booking-form {
+    padding: 22px 15px;
+  }
+
+  .queue-card {
+    padding: 22px 15px;
+  }
+
+  .queue-number strong {
+    font-size: 40px;
+  }
+
+  .result-search {
+    flex-direction: column;
+  }
+
+  .result-search button {
+    width: 100%;
+  }
+
+  .map-container {
+    height: 280px;
+  }
+}
+/* =====================================
+   📱 MOBILE PERFECT DESIGN
+===================================== */
+
+@media (max-width: 600px) {
+
+  html,
+  body {
+    width: 100%;
+    overflow-x: hidden;
+  }
+
+  body {
+    font-size: 14px;
+  }
+
+  /* NAVBAR */
+
+  .navbar {
+    min-height: 68px;
+    padding: 10px 15px;
+  }
+
+  .logo {
+    gap: 8px;
+  }
+
+  .logo > span {
+    width: 38px;
+    height: 38px;
+    font-size: 21px;
+    border-radius: 10px;
+  }
+
+  .logo h2 {
+    font-size: 14px;
+  }
+
+  .logo small {
+    font-size: 9px;
+  }
+
+  .mobile-menu {
+    display: block;
+    font-size: 23px;
+  }
+
+  .nav-links,
+  .navbar > a {
+    display: none;
+  }
+
+  /* HERO */
+
+  .hero {
+    width: 100%;
+    min-height: auto;
+    padding: 45px 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 35px;
+    text-align: center;
+  }
+
+  .hero-content {
+    width: 100%;
+  }
+
+  .badge {
+    font-size: 12px;
+    padding: 7px 13px;
+  }
+
+  .hero h1 {
+    font-size: 32px;
+    line-height: 1.35;
+    margin-bottom: 15px;
+  }
+
+  .hero-content > p {
+    width: 100%;
+    font-size: 14px;
+    line-height: 1.9;
+    margin-bottom: 25px;
+  }
+
+  .hero-buttons {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 30px;
+  }
+
+  .hero-buttons a,
+  .hero-buttons button {
+    width: 100%;
+  }
+
+  .primary-btn,
+  .secondary-btn {
+    min-height: 48px;
+    font-size: 14px;
+  }
+
+  .stats {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+  }
+
+  .stats strong {
+    font-size: 20px;
+  }
+
+  .stats span {
+    font-size: 10px;
+  }
+
+  /* HERO CARD */
+
+  .hero-card {
+    width: 100%;
+    max-width: 100%;
+    padding: 25px 20px;
+    border-radius: 20px;
+    text-align: right;
+  }
+
+  /* SECTIONS */
+
+  .services,
+  .doctors-section,
+  .booking-section,
+  .results-section,
+  .contact-section {
+    width: 100%;
+    padding: 55px 15px;
+  }
+
+  .services > h2,
+  .doctors-section > h2,
+  .booking-section > h2,
+  .contact-section > h2 {
+    font-size: 26px;
+    margin-bottom: 30px;
+  }
+
+  /* SPECIALTIES */
+
+  .service-grid {
+    width: 100%;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+  }
+
+  .service-card {
+    padding: 20px 10px;
+    min-width: 0;
+    border-radius: 15px;
+  }
+
+  .service-card > div {
+    font-size: 28px;
+  }
+
+  .service-card h3 {
+    font-size: 14px;
+  }
+
+  .service-card p {
+    font-size: 11px;
+    line-height: 1.5;
+  }
+
+  /* DOCTORS */
+
+  .doctor-grid {
+    width: 100%;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+  }
+
+  .doctor-card {
+    min-width: 0;
+    padding: 10px;
+    border-radius: 15px;
+  }
+
+  .doctor-image {
+    width: 100%;
+    height: 170px;
+    border-radius: 12px;
+  }
+
+  .doctor-card h3 {
+    font-size: 14px;
+    line-height: 1.5;
+  }
+
+  .doctor-card > p {
+    font-size: 12px;
+    margin-bottom: 10px;
+  }
+
+  .doctor-card button {
+    padding: 9px 5px;
+    font-size: 12px;
+  }
+
+  /* BOOKING */
+
+  .booking-section {
+    text-align: center;
+  }
+
+  .booking-form {
+    width: 100%;
+    padding: 22px 15px;
+    border-radius: 18px;
+  }
+
+  .form-group {
+    margin-bottom: 15px;
+  }
+
+  .form-group label {
+    font-size: 13px;
+  }
+
+  .form-group input,
+  .form-group select {
+    width: 100%;
+    height: 48px;
+    font-size: 14px;
+  }
+
+  .booking-submit {
+    width: 100%;
+  }
+
+  /* SUCCESS CARD */
+
+  .booking-success {
+    width: 100%;
+    padding: 10px 0;
+  }
+
+  .queue-card {
+    width: 100%;
+    max-width: 100%;
+    padding: 20px 13px;
+    border-radius: 20px;
+  }
+
+  .queue-icon {
+    width: 55px;
+    height: 55px;
+    font-size: 25px;
+    margin-bottom: 10px;
+  }
+
+  .success-title {
+    font-size: 19px;
+    line-height: 1.5;
+    margin-bottom: 18px;
+  }
+
+  .queue-number {
+    width: 100%;
+    padding: 14px 10px;
+    margin-bottom: 15px;
+    border-radius: 15px;
+  }
+
+  .queue-number span {
+    font-size: 13px;
+  }
+
+  .queue-number strong {
+    font-size: 38px;
+  }
+
+  .appointment-details {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 13px;
+    border-radius: 13px;
+  }
+
+  .appointment-details p {
+    font-size: 13px;
+    line-height: 1.6;
+    margin: 7px 0;
+    white-space: normal;
+    overflow-wrap: anywhere;
+  }
+
+  .booking-warning {
+    width: 100%;
+    padding: 12px 9px;
+    margin-bottom: 15px;
+    border-radius: 13px;
+  }
+
+  .booking-warning strong {
+    font-size: 13px;
+    line-height: 1.5;
+  }
+
+  .booking-warning span {
+    font-size: 11px;
+    line-height: 1.6;
+  }
+
+  .queue-card > .primary-btn {
+    width: 100%;
+    max-width: 100%;
+    min-height: 46px;
+    font-size: 13px;
+  }
+
+  /* RESULTS */
+
+  .results-box {
+    width: 100%;
+    padding: 30px 15px;
+    border-radius: 20px;
+  }
+
+  .results-box h2 {
+    font-size: 24px;
+    line-height: 1.5;
+  }
+
+  .results-box > p {
+    font-size: 13px;
+    line-height: 1.7;
+  }
+
+  .result-search {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .result-search input,
+  .result-search button {
+    width: 100%;
+    min-height: 48px;
+  }
+
+  /* CONTACT */
+
+  .contact-grid {
+    width: 100%;
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .contact-card {
+    padding: 22px 15px;
+    border-radius: 15px;
+  }
+
+  .map-container {
+    width: 100%;
+    height: 250px;
+    border-radius: 15px;
+  }
+
+  footer > h3 {
+    font-size: 17px;
+  }
+
+  footer > p {
+    font-size: 12px;
+  }
+
+  footer > small {
+    font-size: 10px;
+  }
+}
+/* =====================================
+   ADMIN LOGIN
+===================================== */
+
+.login-page {
+  min-height: 100vh;
+  width: 100%;
+  background: linear-gradient(
+    135deg,
+    #eef6ff,
+    #f8fbff
+  );
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 20px;
+}
+
+.login-card {
+  width: 100%;
+  max-width: 430px;
+
+  background: #ffffff;
+
+  border-radius: 24px;
+
+  padding: 40px 30px;
+
+  box-shadow:
+    0 20px 60px rgba(13, 110, 253, 0.12);
+
+  text-align: center;
+}
+
+.login-logo {
+  width: 70px;
+  height: 70px;
+
+  margin: 0 auto 20px;
+
+  background: #0d6efd;
+  color: white;
+
+  border-radius: 20px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 38px;
+  font-weight: bold;
+}
+
+.login-card h1 {
+  color: #172554;
+  font-size: 26px;
+  margin-bottom: 8px;
+}
+
+.login-subtitle {
+  color: #64748b;
+  font-size: 14px;
+  margin-bottom: 30px;
+}
+
+.login-group {
+  text-align: right;
+  margin-bottom: 18px;
+}
+
+.login-group label {
+  display: block;
+  color: #334155;
+  font-size: 13px;
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+
+.login-group input {
+  width: 100%;
+  height: 50px;
+
+  border: 1px solid #dce3eb;
+  border-radius: 11px;
+
+  padding: 0 15px;
+
+  outline: none;
+
+  font-size: 14px;
+
+  background: #ffffff;
+}
+
+.login-group input:focus {
+  border-color: #0d6efd;
+
+  box-shadow:
+    0 0 0 3px rgba(13, 110, 253, 0.08);
+}
+
+.login-error {
+  background: #fff1f2;
+  color: #be123c;
+
+  border: 1px solid #fecdd3;
+
+  padding: 12px;
+
+  border-radius: 10px;
+
+  font-size: 13px;
+
+  margin-bottom: 15px;
+}
+
+.login-button {
+  width: 100%;
+  height: 50px;
+
+  border: none;
+  border-radius: 11px;
+
+  background: #0d6efd;
+  color: white;
+
+  font-size: 15px;
+  font-weight: bold;
+
+  cursor: pointer;
+
+  transition: 0.2s;
+}
+
+.login-button:hover {
+  background: #0957c7;
+  transform: translateY(-1px);
+}
+
+.login-footer {
+  color: #94a3b8;
+  font-size: 11px;
+  margin-top: 25px;
+}
+
+
+/* =====================================
+   LOGIN MOBILE
+===================================== */
+
+@media (max-width: 600px) {
+
+  .login-page {
+    padding: 15px;
+  }
+
+  .login-card {
+    padding: 30px 20px;
+    border-radius: 20px;
+  }
+
+  .login-logo {
+    width: 60px;
+    height: 60px;
+    font-size: 32px;
+  }
+
+  .login-card h1 {
+    font-size: 23px;
+  }
+
+  .login-subtitle {
+    font-size: 13px;
+  }
+
+  .login-group input {
+    height: 48px;
+  }
+
+  .login-button {
+    height: 48px;
+  }
+}
