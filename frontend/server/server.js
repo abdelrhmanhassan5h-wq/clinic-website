@@ -1,4 +1,4 @@
-﻿require("dotenv").config();
+require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
 const fs = require("fs");
@@ -99,135 +99,135 @@ const resultsFolder = path.join(
 const defaultDoctors = [
   {
     id: 1,
-    specialty: "Ø¨Ø§Ø·Ù†Ø© ÙˆÙ‚Ù„Ø¨",
-    name: "Ø¯. Ù…Ø­Ù…ÙˆØ¯ ÙØªØ­ÙŠ",
+    specialty: "باطنة وقلب",
+    name: "د. محمود فتحي",
     workDays: [0, 1, 3, 5],
     unavailableDates: [],
-    arrivalTime: "10:00 Øµ",
+    arrivalTime: "10:00 ص",
     times: [
-      "10:00 Øµ",
-      "11:00 Øµ",
-      "12:00 Ù…",
-      "1:00 Ù…",
+      "10:00 ص",
+      "11:00 ص",
+      "12:00 م",
+      "1:00 م",
     ],
   },
 
   {
     id: 2,
-    specialty: "Ø¨Ø§Ø·Ù†Ø© ÙˆÙ‚Ù„Ø¨",
-    name: "Ø¹Ø¨Ø¯Ø§Ù„Ø±Ø­Ù…Ù†",
+    specialty: "باطنة وقلب",
+    name: "عبدالرحمن",
     workDays: [0, 1, 2, 3, 4, 5, 6],
     unavailableDates: [],
-    arrivalTime: "10:00 Øµ",
+    arrivalTime: "10:00 ص",
     times: [
-      "10:00 Øµ",
-      "11:00 Øµ",
-      "12:00 Ù…",
-      "1:00 Ù…",
-      "2:00 Ù…",
-      "3:00 Ù…",
+      "10:00 ص",
+      "11:00 ص",
+      "12:00 م",
+      "1:00 م",
+      "2:00 م",
+      "3:00 م",
     ],
   },
 
   {
     id: 3,
-    specialty: "Ø£Ø³Ù†Ø§Ù†",
-    name: "Ø¯. Ø±ÙˆØ²Ø§",
+    specialty: "أسنان",
+    name: "د. روزا",
     workDays: [0, 1, 2, 4],
     unavailableDates: [],
-    arrivalTime: "10:00 Øµ",
+    arrivalTime: "10:00 ص",
     times: [
-      "10:00 Øµ",
-      "11:00 Øµ",
-      "12:00 Ù…",
-      "1:00 Ù…",
+      "10:00 ص",
+      "11:00 ص",
+      "12:00 م",
+      "1:00 م",
     ],
   },
 
   {
     id: 4,
-    specialty: "Ø£Ø³Ù†Ø§Ù†",
-    name: "Ø¯. Ø£Ø­Ù…Ø¯ Ø¹Ø·ÙŠØ©",
+    specialty: "أسنان",
+    name: "د. أحمد عطية",
     workDays: [1, 3, 5],
     unavailableDates: [],
-    arrivalTime: "2:00 Ù…",
+    arrivalTime: "2:00 م",
     times: [
-      "2:00 Ù…",
-      "3:00 Ù…",
-      "4:00 Ù…",
-      "5:00 Ù…",
+      "2:00 م",
+      "3:00 م",
+      "4:00 م",
+      "5:00 م",
     ],
   },
 
   {
     id: 5,
-    specialty: "Ù†Ø³Ø§Ø¡ ÙˆØªÙˆÙ„ÙŠØ¯",
-    name: "Ø¯. Ù‡Ø¨Ø© Ø¹Ù„ÙŠ",
+    specialty: "نساء وتوليد",
+    name: "د. هبة علي",
     workDays: [0, 2, 4],
     unavailableDates: [],
-    arrivalTime: "10:00 Øµ",
+    arrivalTime: "10:00 ص",
     times: [
-      "10:00 Øµ",
-      "12:00 Ù…",
-      "2:00 Ù…",
+      "10:00 ص",
+      "12:00 م",
+      "2:00 م",
     ],
   },
 
   {
     id: 6,
-    specialty: "Ø£Ù†Ù ÙˆØ£Ø°Ù†",
-    name: "Ø¯. Ù…Ø­Ù…Ø¯ Ø´ÙƒØ±ÙŠ",
+    specialty: "أنف وأذن",
+    name: "د. محمد شكري",
     workDays: [1, 3, 5],
     unavailableDates: [],
-    arrivalTime: "11:00 Øµ",
+    arrivalTime: "11:00 ص",
     times: [
-      "11:00 Øµ",
-      "1:00 Ù…",
-      "3:00 Ù…",
+      "11:00 ص",
+      "1:00 م",
+      "3:00 م",
     ],
   },
 
   {
     id: 7,
-    specialty: "Ø¹Ù„Ø§Ø¬ Ø·Ø¨ÙŠØ¹ÙŠ",
-    name: "Ø¬Ù‡Ø§Ø¯ Ø£Ø¨Ùˆ Ø§Ù„Ù…Ø¬Ø¯",
+    specialty: "علاج طبيعي",
+    name: "جهاد أبو المجد",
     workDays: [0, 1, 2, 3, 4],
     unavailableDates: [],
-    arrivalTime: "9:00 Øµ",
+    arrivalTime: "9:00 ص",
     times: [
-      "9:00 Øµ",
-      "10:00 Øµ",
-      "11:00 Øµ",
-      "12:00 Ù…",
+      "9:00 ص",
+      "10:00 ص",
+      "11:00 ص",
+      "12:00 م",
     ],
   },
 
   {
     id: 8,
-    specialty: "Ø¹Ø¸Ø§Ù…",
-    name: "Ù…Ø­Ù…ÙˆØ¯ Ø§Ù„ØºÙ†Ø¯ÙˆØ±",
+    specialty: "عظام",
+    name: "محمود الغندور",
     workDays: [0, 2, 4],
     unavailableDates: [],
-    arrivalTime: "4:00 Ù…",
+    arrivalTime: "4:00 م",
     times: [
-      "4:00 Ù…",
-      "5:00 Ù…",
-      "6:00 Ù…",
-      "7:00 Ù…",
+      "4:00 م",
+      "5:00 م",
+      "6:00 م",
+      "7:00 م",
     ],
   },
 
   {
     id: 9,
-    specialty: "Ø¬Ù„Ø¯ÙŠØ©",
-    name: "Ø¯. Ø£Ø­Ù…Ø¯",
+    specialty: "جلدية",
+    name: "د. أحمد",
     workDays: [1, 3, 5],
     unavailableDates: [],
-    arrivalTime: "10:00 Øµ",
+    arrivalTime: "10:00 ص",
     times: [
-      "10:00 Øµ",
-      "12:00 Ù…",
-      "2:00 Ù…",
+      "10:00 ص",
+      "12:00 م",
+      "2:00 م",
     ],
   },
 ];
@@ -326,12 +326,8 @@ function getDoctors() {
       doctor.arrivalTime || ""
     ).trim();
 
-    /*
-      Ù„Ùˆ Ø§Ù„Ø·Ø¨ÙŠØ¨ Ù‚Ø¯ÙŠÙ… ÙˆÙ…ÙÙŠØ´ Ù„Ù‡ ÙˆÙ‚Øª:
-      Ù†Ø¶Ø¹ ÙˆÙ‚Øª Ø§ÙØªØ±Ø§Ø¶ÙŠ ÙˆÙ†Ø­ÙØ¸Ù‡.
-    */
     if (!arrivalTime) {
-      arrivalTime = "10:00 Øµ";
+      arrivalTime = "10:00 ص";
       changed = true;
     }
 
@@ -369,7 +365,7 @@ function getDoctors() {
     );
 
     console.log(
-      "âœ… ØªÙ… Ø­ÙØ¸ Ø£ÙˆÙ‚Ø§Øª Ø­Ø¶ÙˆØ± Ø§Ù„Ø£Ø·Ø¨Ø§Ø¡ ØªÙ„Ù‚Ø§Ø¦ÙŠÙ‹Ø§"
+      "✅ تم حفظ أوقات حضور الأطباء تلقائيًا"
     );
   }
 
@@ -399,7 +395,7 @@ function requireAdmin(req, res, next) {
   if (!authHeader) {
     return res.status(401).json({
       success: false,
-      message: "ØºÙŠØ± Ù…ØµØ±Ø­ Ù„Ùƒ Ø¨Ø§Ù„Ø¯Ø®ÙˆÙ„",
+      message: "غير مصرح لك بالدخول",
     });
   }
 
@@ -411,7 +407,7 @@ function requireAdmin(req, res, next) {
   if (!token || !adminTokens.has(token)) {
     return res.status(401).json({
       success: false,
-      message: "Ø¬Ù„Ø³Ø© Ø§Ù„Ø¯Ø®ÙˆÙ„ ØºÙŠØ± ØµØ§Ù„Ø­Ø©",
+      message: "جلسة الدخول غير صالحة",
     });
   }
 
@@ -458,7 +454,7 @@ const upload = multer({
       file.mimetype !== "application/pdf"
     ) {
       return cb(
-        new Error("ÙŠØ³Ù…Ø­ Ø¨Ø±ÙØ¹ Ù…Ù„ÙØ§Øª PDF ÙÙ‚Ø·")
+        new Error("يسمح برفع ملفات PDF فقط")
       );
     }
 
@@ -509,7 +505,7 @@ app.post("/api/admin/login", (req, res) => {
     return res.status(401).json({
       success: false,
       message:
-        "Ø§Ø³Ù… Ø§Ù„Ù…Ø³ØªØ®Ø¯Ù… Ø£Ùˆ ÙƒÙ„Ù…Ø© Ø§Ù„Ù…Ø±ÙˆØ± ØºÙŠØ± ØµØ­ÙŠØ­Ø©",
+        "اسم المستخدم أو كلمة المرور غير صحيحة",
     });
   }
 
@@ -521,7 +517,7 @@ app.post("/api/admin/login", (req, res) => {
 
   res.json({
     success: true,
-    message: "ØªÙ… ØªØ³Ø¬ÙŠÙ„ Ø§Ù„Ø¯Ø®ÙˆÙ„ Ø¨Ù†Ø¬Ø§Ø­",
+    message: "تم تسجيل الدخول بنجاح",
     token,
   });
 });
@@ -544,7 +540,7 @@ app.post(
 
     res.json({
       success: true,
-      message: "ØªÙ… ØªØ³Ø¬ÙŠÙ„ Ø§Ù„Ø®Ø±ÙˆØ¬",
+      message: "تم تسجيل الخروج",
     });
   }
 );
@@ -590,7 +586,7 @@ app.post("/api/bookings", (req, res) => {
       return res.status(400).json({
         success: false,
         message:
-          "Ù…Ù† ÙØ¶Ù„Ùƒ Ø§ÙƒØªØ¨ Ø§Ù„Ø§Ø³Ù… Ø¨Ø§Ù„ÙƒØ§Ù…Ù„",
+          "من فضلك اكتب الاسم بالكامل",
       });
     }
 
@@ -598,7 +594,7 @@ app.post("/api/bookings", (req, res) => {
       return res.status(400).json({
         success: false,
         message:
-          "Ù…Ù† ÙØ¶Ù„Ùƒ Ø§ÙƒØªØ¨ Ø±Ù‚Ù… Ø§Ù„Ù‡Ø§ØªÙ",
+          "من فضلك اكتب رقم الهاتف",
       });
     }
 
@@ -606,7 +602,7 @@ app.post("/api/bookings", (req, res) => {
       return res.status(400).json({
         success: false,
         message:
-          "Ù…Ù† ÙØ¶Ù„Ùƒ Ø§Ø®ØªØ± Ø§Ù„ØªØ®ØµØµ",
+          "من فضلك اختر التخصص",
       });
     }
 
@@ -614,7 +610,7 @@ app.post("/api/bookings", (req, res) => {
       return res.status(400).json({
         success: false,
         message:
-          "Ù…Ù† ÙØ¶Ù„Ùƒ Ø§Ø®ØªØ± Ø§Ù„Ø·Ø¨ÙŠØ¨",
+          "من فضلك اختر الطبيب",
       });
     }
 
@@ -622,7 +618,7 @@ app.post("/api/bookings", (req, res) => {
       return res.status(400).json({
         success: false,
         message:
-          "Ù…Ù† ÙØ¶Ù„Ùƒ Ø§Ø®ØªØ± ÙŠÙˆÙ… Ø§Ù„Ø­Ø¬Ø²",
+          "من فضلك اختر يوم الحجز",
       });
     }
 
@@ -630,7 +626,7 @@ app.post("/api/bookings", (req, res) => {
       return res.status(400).json({
         success: false,
         message:
-          "Ø±Ù‚Ù… Ø§Ù„Ù‡Ø§ØªÙ ÙŠØ¬Ø¨ Ø£Ù† ÙŠØ¨Ø¯Ø£ Ø¨Ù€ 01 ÙˆÙŠÙƒÙˆÙ† 11 Ø±Ù‚Ù…Ù‹Ø§",
+          "رقم الهاتف يجب أن يبدأ بـ 01 ويكون 11 رقمًا",
       });
     }
 
@@ -638,7 +634,7 @@ app.post("/api/bookings", (req, res) => {
       return res.status(400).json({
         success: false,
         message:
-          "Ø§Ù„ØªØ§Ø±ÙŠØ® ØºÙŠØ± ØµØ­ÙŠØ­",
+          "التاريخ غير صحيح",
       });
     }
 
@@ -650,7 +646,7 @@ app.post("/api/bookings", (req, res) => {
       return res.status(400).json({
         success: false,
         message:
-          "Ø§Ù„ØªØ§Ø±ÙŠØ® ØºÙŠØ± ØµØ­ÙŠØ­",
+          "التاريخ غير صحيح",
       });
     }
 
@@ -666,7 +662,7 @@ app.post("/api/bookings", (req, res) => {
       selectedDoctor = doctors.find(
         (doctor) =>
           String(doctor.name || "")
-            .replace(/^Ø¯\.\s*/, "")
+            .replace(/^د\.\s*/, "")
             .trim() === cleanDoctor
       );
     }
@@ -675,7 +671,7 @@ app.post("/api/bookings", (req, res) => {
       return res.status(404).json({
         success: false,
         message:
-          "Ø§Ù„Ø·Ø¨ÙŠØ¨ ØºÙŠØ± Ù…ÙˆØ¬ÙˆØ¯ ÙÙŠ Ù‚Ø§Ø¹Ø¯Ø© Ø§Ù„Ø¨ÙŠØ§Ù†Ø§Øª",
+          "الطبيب غير موجود في قاعدة البيانات",
       });
     }
 
@@ -686,7 +682,7 @@ app.post("/api/bookings", (req, res) => {
       return res.status(400).json({
         success: false,
         message:
-          "Ø§Ù„ØªØ®ØµØµ Ù„Ø§ ÙŠØ·Ø§Ø¨Ù‚ ØªØ®ØµØµ Ø§Ù„Ø·Ø¨ÙŠØ¨ Ø§Ù„Ù…Ø®ØªØ§Ø±",
+          "التخصص لا يطابق تخصص الطبيب المختار",
       });
     }
 
@@ -713,7 +709,7 @@ app.post("/api/bookings", (req, res) => {
       return res.status(409).json({
         success: false,
         message:
-          "Ø§Ù„Ø·Ø¨ÙŠØ¨ Ù„Ø§ ÙŠØ¹Ù…Ù„ ÙÙŠ Ù‡Ø°Ø§ Ø§Ù„ÙŠÙˆÙ…",
+          "الطبيب لا يعمل في هذا اليوم",
       });
     }
 
@@ -732,7 +728,7 @@ app.post("/api/bookings", (req, res) => {
       return res.status(409).json({
         success: false,
         message:
-          "Ù‡Ø°Ø§ Ø§Ù„ÙŠÙˆÙ… Ù…ØºÙ„Ù‚ Ù„Ù„Ø­Ø¬Ø² Ø¹Ù†Ø¯ Ø§Ù„Ø·Ø¨ÙŠØ¨",
+          "هذا اليوم مغلق للحجز عند الطبيب",
       });
     }
 
@@ -750,7 +746,7 @@ app.post("/api/bookings", (req, res) => {
       return res.status(409).json({
         success: false,
         message:
-          "Ù‡Ø°Ø§ Ø§Ù„Ø±Ù‚Ù… Ù„Ø¯ÙŠÙ‡ Ø­Ø¬Ø² Ø¨Ø§Ù„ÙØ¹Ù„ ÙÙŠ Ù‡Ø°Ø§ Ø§Ù„ÙŠÙˆÙ…",
+          "هذا الرقم لديه حجز بالفعل في هذا اليوم",
       });
     }
 
@@ -772,7 +768,7 @@ app.post("/api/bookings", (req, res) => {
     const doctorArrivalTime =
       String(
         selectedDoctor.arrivalTime ||
-          "10:00 Øµ"
+          "10:00 ص"
       ).trim();
 
     const newBooking = {
@@ -794,7 +790,7 @@ app.post("/api/bookings", (req, res) => {
 
       doctorArrivalTime,
 
-      status: "Ø¬Ø¯ÙŠØ¯",
+      status: "جديد",
 
       createdAt:
         new Date().toISOString(),
@@ -812,7 +808,7 @@ app.post("/api/bookings", (req, res) => {
     return res.status(201).json({
       success: true,
       message:
-        "ØªÙ… ØªØ³Ø¬ÙŠÙ„ Ø§Ù„Ø­Ø¬Ø² Ø¨Ù†Ø¬Ø§Ø­",
+        "تم تسجيل الحجز بنجاح",
 
       booking: newBooking,
 
@@ -829,7 +825,7 @@ app.post("/api/bookings", (req, res) => {
     return res.status(500).json({
       success: false,
       message:
-        "Ø­Ø¯Ø« Ø®Ø·Ø£ Ø£Ø«Ù†Ø§Ø¡ ØªØ³Ø¬ÙŠÙ„ Ø§Ù„Ø­Ø¬Ø²",
+        "حدث خطأ أثناء تسجيل الحجز",
     });
   }
 });
@@ -865,17 +861,12 @@ app.get(
         return res.status(400).json({
           success: false,
           message:
-            "Ø±Ù‚Ù… Ø§Ù„Ù‡Ø§ØªÙ ÙŠØ¬Ø¨ Ø£Ù† ÙŠØ¨Ø¯Ø£ Ø¨Ù€ 01 ÙˆÙŠÙƒÙˆÙ† 11 Ø±Ù‚Ù…Ù‹Ø§",
+            "رقم الهاتف يجب أن يبدأ بـ 01 ويكون 11 رقمًا",
         });
       }
 
       const bookings = getBookings();
 
-      /*
-        Ù…Ù‡Ù… Ø¬Ø¯Ù‹Ø§:
-        Ù†Ù‚Ø±Ø£ Ø§Ù„Ø¯ÙƒØ§ØªØ±Ø© Ø§Ù„Ø­Ø§Ù„ÙŠÙŠÙ† ÙÙŠ ÙƒÙ„ Ù…ØªØ§Ø¨Ø¹Ø©
-        Ø¹Ù„Ø´Ø§Ù† Ù†Ø¬ÙŠØ¨ Ø§Ù„ÙˆÙ‚Øª Ø§Ù„Ø­Ø§Ù„ÙŠ Ù…Ø¨Ø§Ø´Ø±Ø©.
-      */
       const doctors = getDoctors();
 
       const patientBookings =
@@ -906,7 +897,7 @@ app.get(
                         booking.date || ""
                       ).trim() &&
                     item.status ===
-                      "Ø¬Ø¯ÙŠØ¯" &&
+                      "جديد" &&
                     Number(
                       item.queueNumber
                     ) <
@@ -936,7 +927,7 @@ app.get(
                 String(
                   doctor?.arrivalTime ||
                     booking.doctorArrivalTime ||
-                    "10:00 Øµ"
+                    "10:00 ص"
                 ).trim();
 
               return {
@@ -957,7 +948,7 @@ app.get(
         return res.status(404).json({
           success: false,
           message:
-            "Ù„Ø§ ÙŠÙˆØ¬Ø¯ Ø­Ø¬Ø² Ø¨Ù‡Ø°Ø§ Ø§Ù„Ø±Ù‚Ù…",
+            "لا يوجد حجز بهذا الرقم",
         });
       }
 
@@ -975,7 +966,7 @@ app.get(
       return res.status(500).json({
         success: false,
         message:
-          "Ø­Ø¯Ø« Ø®Ø·Ø£ Ø£Ø«Ù†Ø§Ø¡ Ù…ØªØ§Ø¨Ø¹Ø© Ø§Ù„Ø­Ø¬Ø²",
+          "حدث خطأ أثناء متابعة الحجز",
       });
     }
   }
@@ -1006,7 +997,7 @@ app.post(
         return res.status(404).json({
           success: false,
           message:
-            "Ø§Ù„Ø­Ø¬Ø² ØºÙŠØ± Ù…ÙˆØ¬ÙˆØ¯",
+            "الحجز غير موجود",
         });
       }
 
@@ -1017,7 +1008,7 @@ app.post(
         return res.status(400).json({
           success: false,
           message:
-            "Ù‡Ø°Ø§ Ø§Ù„Ø­Ø¬Ø² Ù…Ø¤ÙƒØ¯ Ø¨Ø§Ù„ÙØ¹Ù„",
+            "هذا الحجز مؤكد بالفعل",
         });
       }
 
@@ -1028,7 +1019,7 @@ app.post(
         return res.status(400).json({
           success: false,
           message:
-            "Ù„Ø§ ÙŠÙ…ÙƒÙ† ØªØ£ÙƒÙŠØ¯ Ø­Ø¬Ø² Ù…Ù„ØºÙŠ",
+            "لا يمكن تأكيد حجز ملغي",
         });
       }
 
@@ -1054,7 +1045,7 @@ app.post(
           String(
             doctor.arrivalTime ||
               booking.doctorArrivalTime ||
-              "10:00 Øµ"
+              "10:00 ص"
           ).trim();
       }
 
@@ -1063,7 +1054,7 @@ app.post(
       res.json({
         success: true,
         message:
-          "ØªÙ… ØªØ£ÙƒÙŠØ¯ Ø§Ù„Ø­Ø¬Ø² Ø¨Ù†Ø¬Ø§Ø­",
+          "تم تأكيد الحجز بنجاح",
         booking,
       });
     } catch (error) {
@@ -1075,7 +1066,7 @@ app.post(
       res.status(500).json({
         success: false,
         message:
-          "Ø­Ø¯Ø« Ø®Ø·Ø£ Ø£Ø«Ù†Ø§Ø¡ ØªØ£ÙƒÙŠØ¯ Ø§Ù„Ø­Ø¬Ø²",
+          "حدث خطأ أثناء تأكيد الحجز",
       });
     }
   }
@@ -1106,7 +1097,7 @@ app.post(
         return res.status(404).json({
           success: false,
           message:
-            "Ø§Ù„Ø­Ø¬Ø² ØºÙŠØ± Ù…ÙˆØ¬ÙˆØ¯",
+            "الحجز غير موجود",
         });
       }
 
@@ -1121,7 +1112,7 @@ app.post(
       res.json({
         success: true,
         message:
-          "ØªÙ… Ø¥Ù„ØºØ§Ø¡ Ø§Ù„Ø­Ø¬Ø² Ø¨Ù†Ø¬Ø§Ø­",
+          "تم إلغاء الحجز بنجاح",
         booking,
       });
     } catch (error) {
@@ -1133,7 +1124,7 @@ app.post(
       res.status(500).json({
         success: false,
         message:
-          "Ø­Ø¯Ø« Ø®Ø·Ø£ Ø£Ø«Ù†Ø§Ø¡ Ø¥Ù„ØºØ§Ø¡ Ø§Ù„Ø­Ø¬Ø²",
+          "حدث خطأ أثناء إلغاء الحجز",
       });
     }
   }
@@ -1167,7 +1158,7 @@ app.delete(
         return res.status(404).json({
           success: false,
           message:
-            "Ø§Ù„Ø­Ø¬Ø² ØºÙŠØ± Ù…ÙˆØ¬ÙˆØ¯",
+            "الحجز غير موجود",
         });
       }
 
@@ -1176,7 +1167,7 @@ app.delete(
       res.json({
         success: true,
         message:
-          "ØªÙ… Ø­Ø°Ù Ø§Ù„Ø­Ø¬Ø² Ø¨Ù†Ø¬Ø§Ø­",
+          "تم حذف الحجز بنجاح",
       });
     } catch (error) {
       console.error(
@@ -1187,7 +1178,7 @@ app.delete(
       res.status(500).json({
         success: false,
         message:
-          "Ø­Ø¯Ø« Ø®Ø·Ø£ Ø£Ø«Ù†Ø§Ø¡ Ø­Ø°Ù Ø§Ù„Ø­Ø¬Ø²",
+          "حدث خطأ أثناء حذف الحجز",
       });
     }
   }
@@ -1209,7 +1200,7 @@ app.get(
         return res.status(400).json({
           success: false,
           message:
-            "Ù…Ù† ÙØ¶Ù„Ùƒ Ø£Ø¯Ø®Ù„ Ø±Ù‚Ù… Ø§Ù„Ù‡Ø§ØªÙ",
+            "من فضلك أدخل رقم الهاتف",
         });
       }
 
@@ -1217,7 +1208,7 @@ app.get(
         return res.status(400).json({
           success: false,
           message:
-            "Ø±Ù‚Ù… Ø§Ù„Ù‡Ø§ØªÙ ÙŠØ¬Ø¨ Ø£Ù† ÙŠØ¨Ø¯Ø£ Ø¨Ù€ 01 ÙˆÙŠÙƒÙˆÙ† 11 Ø±Ù‚Ù…Ù‹Ø§",
+            "رقم الهاتف يجب أن يبدأ بـ 01 ويكون 11 رقمًا",
         });
       }
 
@@ -1234,14 +1225,14 @@ app.get(
         return res.status(404).json({
           success: false,
           message:
-            "Ù„Ø§ ØªÙˆØ¬Ø¯ Ù†ØªÙŠØ¬Ø© ØªØ­Ø§Ù„ÙŠÙ„ Ù…Ø³Ø¬Ù„Ø© Ù„Ù‡Ø°Ø§ Ø§Ù„Ø±Ù‚Ù…",
+            "لا توجد نتيجة تحاليل مسجلة لهذا الرقم",
         });
       }
 
       res.json({
         success: true,
         message:
-          "ØªÙ… Ø§Ù„Ø¹Ø«ÙˆØ± Ø¹Ù„Ù‰ Ø§Ù„Ù†ØªØ§Ø¦Ø¬",
+          "تم العثور على النتائج",
         results:
           patientResults,
       });
@@ -1250,11 +1241,13 @@ app.get(
         "SEARCH RESULTS ERROR:",
         error
       );
+               error
+      );
 
       res.status(500).json({
         success: false,
         message:
-          "Ø­Ø¯Ø« Ø®Ø·Ø£ Ø£Ø«Ù†Ø§Ø¡ Ø§Ù„Ø¨Ø­Ø« Ø¹Ù† Ø§Ù„Ù†ØªÙŠØ¬Ø©",
+          "حدث خطأ أثناء البحث عن النتيجة",
       });
     }
   }
@@ -1283,7 +1276,7 @@ app.get(
         return res.status(404).json({
           success: false,
           message:
-            "Ù…Ù„Ù Ø§Ù„Ù†ØªÙŠØ¬Ø© ØºÙŠØ± Ù…ÙˆØ¬ÙˆØ¯",
+            "ملف النتيجة غير موجود",
         });
       }
 
@@ -1297,7 +1290,7 @@ app.get(
       res.status(500).json({
         success: false,
         message:
-          "Ø­Ø¯Ø« Ø®Ø·Ø£ Ø£Ø«Ù†Ø§Ø¡ ÙØªØ­ Ù…Ù„Ù Ø§Ù„Ù†ØªÙŠØ¬Ø©",
+          "حدث خطأ أثناء فتح ملف النتيجة",
       });
     }
   }
@@ -1354,7 +1347,7 @@ app.post(
         return res.status(400).json({
           success: false,
           message:
-            "Ø§Ø³Ù… Ø§Ù„Ù…Ø±ÙŠØ¶ ÙˆØ±Ù‚Ù… Ø§Ù„Ù‡Ø§ØªÙ Ù…Ø·Ù„ÙˆØ¨Ø§Ù†",
+            "اسم المريض ورقم الهاتف مطلوبان",
         });
       }
 
@@ -1372,7 +1365,7 @@ app.post(
         return res.status(400).json({
           success: false,
           message:
-            "Ø±Ù‚Ù… Ø§Ù„Ù‡Ø§ØªÙ ØºÙŠØ± ØµØ­ÙŠØ­",
+            "رقم الهاتف غير صحيح",
         });
       }
 
@@ -1380,7 +1373,7 @@ app.post(
         return res.status(400).json({
           success: false,
           message:
-            "Ù…Ù† ÙØ¶Ù„Ùƒ Ø§Ø®ØªØ± Ù…Ù„Ù PDF",
+            "من فضلك اختر ملف PDF",
         });
       }
 
@@ -1414,7 +1407,7 @@ app.post(
       res.status(201).json({
         success: true,
         message:
-          "ØªÙ… Ø±ÙØ¹ Ù†ØªÙŠØ¬Ø© Ø§Ù„ØªØ­Ù„ÙŠÙ„ Ø¨Ù†Ø¬Ø§Ø­",
+          "تم رفع نتيجة التحليل بنجاح",
         result:
           newResult,
       });
@@ -1442,7 +1435,7 @@ app.post(
         success: false,
         message:
           error.message ||
-          "Ø­Ø¯Ø« Ø®Ø·Ø£ Ø£Ø«Ù†Ø§Ø¡ Ø±ÙØ¹ Ù†ØªÙŠØ¬Ø© Ø§Ù„ØªØ­Ù„ÙŠÙ„",
+          "حدث خطأ أثناء رفع نتيجة التحليل",
       });
     }
   }
@@ -1473,7 +1466,7 @@ app.delete(
         return res.status(404).json({
           success: false,
           message:
-            "Ù†ØªÙŠØ¬Ø© Ø§Ù„ØªØ­Ù„ÙŠÙ„ ØºÙŠØ± Ù…ÙˆØ¬ÙˆØ¯Ø©",
+            "نتيجة التحليل غير موجودة",
         });
       }
 
@@ -1506,7 +1499,7 @@ app.delete(
       res.json({
         success: true,
         message:
-          "ØªÙ… Ø­Ø°Ù Ù†ØªÙŠØ¬Ø© Ø§Ù„ØªØ­Ù„ÙŠÙ„ Ø¨Ù†Ø¬Ø§Ø­",
+          "تم حذف نتيجة التحليل بنجاح",
       });
     } catch (error) {
       console.error(
@@ -1517,7 +1510,7 @@ app.delete(
       res.status(500).json({
         success: false,
         message:
-          "Ø­Ø¯Ø« Ø®Ø·Ø£ Ø£Ø«Ù†Ø§Ø¡ Ø­Ø°Ù Ù†ØªÙŠØ¬Ø© Ø§Ù„ØªØ­Ù„ÙŠÙ„",
+          "حدث خطأ أثناء حذف نتيجة التحليل",
       });
     }
   }
@@ -1556,7 +1549,7 @@ app.post(
         return res.status(400).json({
           success: false,
           message:
-            "Ù…Ù† ÙØ¶Ù„Ùƒ Ø£ÙƒÙ…Ù„ Ø¨ÙŠØ§Ù†Ø§Øª Ø§Ù„ØªÙ‚ÙŠÙŠÙ…",
+            "من فضلك أكمل بيانات التقييم",
         });
       }
 
@@ -1576,7 +1569,7 @@ app.post(
         return res.status(400).json({
           success: false,
           message:
-            "Ø§Ù„Ø§Ø³Ù… ÙˆØ§Ù„ØªÙ‚ÙŠÙŠÙ… Ù…Ø·Ù„ÙˆØ¨Ø§Ù†",
+            "الاسم والتقييم مطلوبان",
         });
       }
 
@@ -1590,7 +1583,7 @@ app.post(
         return res.status(400).json({
           success: false,
           message:
-            "Ø§Ù„ØªÙ‚ÙŠÙŠÙ… ÙŠØ¬Ø¨ Ø£Ù† ÙŠÙƒÙˆÙ† Ù…Ù† 1 Ø¥Ù„Ù‰ 5 Ù†Ø¬ÙˆÙ…",
+            "التقييم يجب أن يكون من 1 إلى 5 نجوم",
         });
       }
 
@@ -1615,7 +1608,7 @@ app.post(
       res.status(201).json({
         success: true,
         message:
-          "ØªÙ… Ø¥Ø¶Ø§ÙØ© ØªÙ‚ÙŠÙŠÙ…Ùƒ Ø¨Ù†Ø¬Ø§Ø­",
+          "تم إضافة تقييمك بنجاح",
         review:
           newReview,
       });
@@ -1628,7 +1621,7 @@ app.post(
       res.status(500).json({
         success: false,
         message:
-          "Ø­Ø¯Ø« Ø®Ø·Ø£ Ø£Ø«Ù†Ø§Ø¡ Ø¥Ø¶Ø§ÙØ© Ø§Ù„ØªÙ‚ÙŠÙŠÙ…",
+          "حدث خطأ أثناء إضافة التقييم",
       });
     }
   }
@@ -1658,7 +1651,7 @@ app.delete(
         return res.status(404).json({
           success: false,
           message:
-            "Ø§Ù„ØªÙ‚ÙŠÙŠÙ… ØºÙŠØ± Ù…ÙˆØ¬ÙˆØ¯",
+            "التقييم غير موجود",
         });
       }
 
@@ -1667,7 +1660,7 @@ app.delete(
       res.json({
         success: true,
         message:
-          "ØªÙ… Ø­Ø°Ù Ø§Ù„ØªÙ‚ÙŠÙŠÙ… Ø¨Ù†Ø¬Ø§Ø­",
+          "تم حذف التقييم بنجاح",
       });
     } catch (error) {
       console.error(
@@ -1678,7 +1671,7 @@ app.delete(
       res.status(500).json({
         success: false,
         message:
-          "Ø­Ø¯Ø« Ø®Ø·Ø£ Ø£Ø«Ù†Ø§Ø¡ Ø­Ø°Ù Ø§Ù„ØªÙ‚ÙŠÙŠÙ…",
+          "حدث خطأ أثناء حذف التقييم",
       });
     }
   }
@@ -1721,7 +1714,7 @@ app.post(
         return res.status(400).json({
           success: false,
           message:
-            "Ø§Ø³Ù… Ø§Ù„Ø·Ø¨ÙŠØ¨ ÙˆØ§Ù„ØªØ®ØµØµ Ù…Ø·Ù„ÙˆØ¨Ø§Ù†",
+            "اسم الطبيب والتخصص مطلوبان",
         });
       }
 
@@ -1740,7 +1733,7 @@ app.post(
         arrivalTime:
           String(
             arrivalTime ||
-              "10:00 Øµ"
+              "10:00 ص"
           ).trim(),
 
         workDays:
@@ -1748,7 +1741,7 @@ app.post(
             ? [
                 ...new Set(
                   workDays.map(Number)
-                ),
+                                         ),
               ].filter(
                 (day) =>
                   Number.isInteger(day) &&
@@ -1791,7 +1784,7 @@ app.post(
       res.status(201).json({
         success: true,
         message:
-          "ØªÙ… Ø¥Ø¶Ø§ÙØ© Ø§Ù„Ø·Ø¨ÙŠØ¨ Ø¨Ù†Ø¬Ø§Ø­",
+          "تم إضافة الطبيب بنجاح",
         doctor:
           newDoctor,
       });
@@ -1804,7 +1797,7 @@ app.post(
       res.status(500).json({
         success: false,
         message:
-          "Ø­Ø¯Ø« Ø®Ø·Ø£ Ø£Ø«Ù†Ø§Ø¡ Ø¥Ø¶Ø§ÙØ© Ø§Ù„Ø·Ø¨ÙŠØ¨",
+          "حدث خطأ أثناء إضافة الطبيب",
       });
     }
   }
@@ -1836,7 +1829,7 @@ app.put(
         return res.status(404).json({
           success: false,
           message:
-            "Ø§Ù„Ø·Ø¨ÙŠØ¨ ØºÙŠØ± Ù…ÙˆØ¬ÙˆØ¯",
+            "الطبيب غير موجود",
         });
       }
 
@@ -1909,7 +1902,7 @@ app.put(
 
       if (!doctor.arrivalTime) {
         doctor.arrivalTime =
-          "10:00 Øµ";
+          "10:00 ص";
       }
 
       if (
@@ -1957,14 +1950,14 @@ app.put(
       );
 
       console.log(
-        "âœ… DOCTOR SAVED:",
+        "✅ DOCTOR SAVED:",
         doctor
       );
 
       return res.json({
         success: true,
         message:
-          "ØªÙ… ØªØ¹Ø¯ÙŠÙ„ Ø¨ÙŠØ§Ù†Ø§Øª Ø§Ù„Ø·Ø¨ÙŠØ¨ Ø¨Ù†Ø¬Ø§Ø­",
+          "تم تعديل بيانات الطبيب بنجاح",
         doctor,
       });
     } catch (error) {
@@ -1976,7 +1969,7 @@ app.put(
       return res.status(500).json({
         success: false,
         message:
-          "Ø­Ø¯Ø« Ø®Ø·Ø£ Ø£Ø«Ù†Ø§Ø¡ ØªØ¹Ø¯ÙŠÙ„ Ø§Ù„Ø·Ø¨ÙŠØ¨",
+          "حدث خطأ أثناء تعديل الطبيب",
       });
     }
   }
@@ -2007,7 +2000,7 @@ app.post(
         return res.status(400).json({
           success: false,
           message:
-            "ØµÙŠØºØ© Ø§Ù„ØªØ§Ø±ÙŠØ® ØºÙŠØ± ØµØ­ÙŠØ­Ø©",
+            "صيغة التاريخ غير صحيحة",
         });
       }
 
@@ -2024,7 +2017,7 @@ app.post(
         return res.status(404).json({
           success: false,
           message:
-            "Ø§Ù„Ø·Ø¨ÙŠØ¨ ØºÙŠØ± Ù…ÙˆØ¬ÙˆØ¯",
+            "الطبيب غير موجود",
         });
       }
 
@@ -2054,7 +2047,7 @@ app.post(
       res.json({
         success: true,
         message:
-          "ØªÙ… Ø¥ØºÙ„Ø§Ù‚ Ù‡Ø°Ø§ Ø§Ù„ÙŠÙˆÙ… ÙÙ‚Ø·",
+          "تم إغلاق هذا اليوم فقط",
         doctor,
       });
     } catch (error) {
@@ -2066,7 +2059,7 @@ app.post(
       res.status(500).json({
         success: false,
         message:
-          "Ø­Ø¯Ø« Ø®Ø·Ø£ Ø£Ø«Ù†Ø§Ø¡ Ø¥ØºÙ„Ø§Ù‚ Ø§Ù„ÙŠÙˆÙ…",
+          "حدث خطأ أثناء إغلاق اليوم",
       });
     }
   }
@@ -2102,7 +2095,54 @@ app.delete(
         return res.status(404).json({
           success: false,
           message:
-            "Ø§Ù„Ø·Ø¨ÙŠØ¨ ØºÙŠØ± Ù…ÙˆØ¬ÙˆØ¯",
+            "الطبيب غير موجود",
+        });
+      }
+
+      if (
+        !Array.isArray(
+          doctor.unavailableDates
+        )
+      ) {
+        doctor.unavailableDates =
+          [];
+      }
+
+      doctor.unavailableDates =
+        doctor.unavailableDates.filter(
+          (item) =>
+            item !== date
+        );
+
+      saveDoctors(
+        doctors
+      );
+
+      res.json({
+        success: true,
+        message:
+          "تم فتح هذا اليوم",
+        doctor,
+      });
+    } catch (error) {
+      console.error(
+        "REMOVE UNAVAILABLE DATE ERROR:",
+        error
+      );
+
+      res.status(500).json({
+        success: false,
+        message:
+          "حدث خطأ أثناء فتح اليوم",
+      });
+    }
+  }
+);
+      if (!doctor) {
+        return res.status(404).json({
+          success: false,
+          message:
+            "الطبيب غير موجود",
         });
       }
 
@@ -2123,7 +2163,7 @@ app.delete(
       res.json({
         success: true,
         message:
-          "ØªÙ… ÙØªØ­ Ø§Ù„ÙŠÙˆÙ… Ù…Ø±Ø© Ø£Ø®Ø±Ù‰",
+          "تم فتح اليوم مرة أخرى",
         doctor,
       });
     } catch (error) {
@@ -2135,7 +2175,7 @@ app.delete(
       res.status(500).json({
         success: false,
         message:
-          "Ø­Ø¯Ø« Ø®Ø·Ø£ Ø£Ø«Ù†Ø§Ø¡ ÙØªØ­ Ø§Ù„ÙŠÙˆÙ…",
+          "حدث خطأ أثناء فتح اليوم",
       });
     }
   }
@@ -2169,7 +2209,7 @@ app.delete(
         return res.status(404).json({
           success: false,
           message:
-            "Ø§Ù„Ø·Ø¨ÙŠØ¨ ØºÙŠØ± Ù…ÙˆØ¬ÙˆØ¯",
+            "الطبيب غير موجود",
         });
       }
 
@@ -2180,7 +2220,7 @@ app.delete(
       res.json({
         success: true,
         message:
-          "ØªÙ… Ø­Ø°Ù Ø§Ù„Ø·Ø¨ÙŠØ¨ Ø¨Ù†Ø¬Ø§Ø­",
+          "تم حذف الطبيب بنجاح",
       });
     } catch (error) {
       console.error(
@@ -2191,7 +2231,7 @@ app.delete(
       res.status(500).json({
         success: false,
         message:
-          "Ø­Ø¯Ø« Ø®Ø·Ø£ Ø£Ø«Ù†Ø§Ø¡ Ø­Ø°Ù Ø§Ù„Ø·Ø¨ÙŠØ¨",
+          "حدث خطأ أثناء حذف الطبيب",
       });
     }
   }
@@ -2240,14 +2280,14 @@ app.use(
         return res.status(400).json({
           success: false,
           message:
-            "Ø­Ø¬Ù… Ù…Ù„Ù PDF ÙŠØ¬Ø¨ Ø£Ù„Ø§ ÙŠØªØ¬Ø§ÙˆØ² 10MB",
+            "حجم ملف PDF يجب ألا يتجاوز 10MB",
         });
       }
 
       return res.status(400).json({
         success: false,
         message:
-          "Ø­Ø¯Ø« Ø®Ø·Ø£ Ø£Ø«Ù†Ø§Ø¡ Ø±ÙØ¹ Ø§Ù„Ù…Ù„Ù",
+          "حدث خطأ أثناء رفع الملف",
       });
     }
 
@@ -2255,7 +2295,7 @@ app.use(
       success: false,
       message:
         error.message ||
-        "Ø­Ø¯Ø« Ø®Ø·Ø£ ÙÙŠ Ø§Ù„Ø³ÙŠØ±ÙØ±",
+        "حدث خطأ في السيرفر",
     });
   }
 );
@@ -2269,5 +2309,3 @@ if (require.main === module) {
     console.log(`Server running on port ${PORT}`);
   });
 }
-
-module.exports = app;
