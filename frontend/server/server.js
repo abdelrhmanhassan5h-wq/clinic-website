@@ -1,4 +1,5 @@
 require("dotenv").config();
+
 const express = require("express");
 const cors = require("cors");
 const fs = require("fs");
@@ -7,7 +8,6 @@ const crypto = require("crypto");
 const multer = require("multer");
 
 const app = express();
-
 const PORT = process.env.PORT || 5000;
 
 /* =================================================
@@ -15,369 +15,123 @@ const PORT = process.env.PORT || 5000;
 ================================================= */
 
 const allowedOrigins = [
+  "http://localhost:3000",
   "http://localhost:5173",
-  "http://localhost:5174",
-  "http://localhost:5175",
-  "http://192.168.1.5:5173",
-  "http://192.168.1.5:5174",
-  "http://192.168.1.5:5175",
+  "https://clinic-website-seven-phi.vercel.app",
+  "https://clinic-website-n52n-dq85dt68d-abdelrhmanhassan5h-wq.vercel.app",
 ];
-
-if (process.env.FRONTEND_URL) {
-  allowedOrigins.push(
-    process.env.FRONTEND_URL.replace(/\/$/, "")
-  );
-}
 
 app.use(
   cors({
     origin: function (origin, callback) {
-      if (!origin) {
+      if (!origin) return callback(null, true);
+
+      if (allowedOrigins.includes(origin)) {
         return callback(null, true);
       }
 
-      const cleanOrigin = origin.replace(/\/$/, "");
-
-      if (allowedOrigins.includes(cleanOrigin)) {
-        return callback(null, true);
-      }
-
-      return callback(
-        new Error("CORS: Origin not allowed")
-      );
+      return callback(null, true);
     },
-    methods: [
-      "GET",
-      "POST",
-      "PUT",
-      "DELETE",
-      "OPTIONS",
-    ],
-    allowedHeaders: [
-      "Content-Type",
-      "Authorization",
-    ],
     credentials: true,
   })
 );
 
-app.use(express.json());
+app.use(express.json({ limit: "10mb" }));
+app.use(express.urlencoded({ extended: true, limit: "10mb" }));
 
 /* =================================================
-   FILES
+   PATHS
 ================================================= */
 
-const bookingsFile = path.join(
-  __dirname,
-  "bookings.json"
-);
+const DATA_DIR = path.join(__dirname);
 
-const resultsFile = path.join(
-  __dirname,
-  "results.json"
-);
+const BOOKINGS_FILE = path.join(DATA_DIR, "bookings.json");
+const RESULTS_FILE = path.join(DATA_DIR, "results.json");
+const REVIEWS_FILE = path.join(DATA_DIR, "reviews.json");
+const DOCTORS_FILE = path.join(DATA_DIR, "doctors.json");
 
-const reviewsFile = path.join(
-  __dirname,
-  "reviews.json"
-);
+const PDF_DIR = path.join(DATA_DIR, "pdfs");
 
-const doctorsFile = path.join(
-  __dirname,
-  "doctors.json"
-);
-
-const resultsFolder = path.join(
-  __dirname,
-  "results"
-);
+if (!fs.existsSync(PDF_DIR)) {
+  fs.mkdirSync(PDF_DIR, { recursive: true });
+}
 
 /* =================================================
-   DEFAULT DOCTORS
+   HELPERS
 ================================================= */
 
-const defaultDoctors = [
-  {
-    id: 1,
-    specialty: "باطنة وقلب",
-    name: "د. محمود فتحي",
-    workDays: [0, 1, 3, 5],
-    unavailableDates: [],
-    arrivalTime: "10:00 ص",
-    times: [
-      "10:00 ص",
-      "11:00 ص",
-      "12:00 م",
-      "1:00 م",
-    ],
-  },
-
-  {
-    id: 2,
-    specialty: "باطنة وقلب",
-    name: "عبدالرحمن",
-    workDays: [0, 1, 2, 3, 4, 5, 6],
-    unavailableDates: [],
-    arrivalTime: "10:00 ص",
-    times: [
-      "10:00 ص",
-      "11:00 ص",
-      "12:00 م",
-      "1:00 م",
-      "2:00 م",
-      "3:00 م",
-    ],
-  },
-
-  {
-    id: 3,
-    specialty: "أسنان",
-    name: "د. روزا",
-    workDays: [0, 1, 2, 4],
-    unavailableDates: [],
-    arrivalTime: "10:00 ص",
-    times: [
-      "10:00 ص",
-      "11:00 ص",
-      "12:00 م",
-      "1:00 م",
-    ],
-  },
-
-  {
-    id: 4,
-    specialty: "أسنان",
-    name: "د. أحمد عطية",
-    workDays: [1, 3, 5],
-    unavailableDates: [],
-    arrivalTime: "2:00 م",
-    times: [
-      "2:00 م",
-      "3:00 م",
-      "4:00 م",
-      "5:00 م",
-    ],
-  },
-
-  {
-    id: 5,
-    specialty: "نساء وتوليد",
-    name: "د. هبة علي",
-    workDays: [0, 2, 4],
-    unavailableDates: [],
-    arrivalTime: "10:00 ص",
-    times: [
-      "10:00 ص",
-      "12:00 م",
-      "2:00 م",
-    ],
-  },
-
-  {
-    id: 6,
-    specialty: "أنف وأذن",
-    name: "د. محمد شكري",
-    workDays: [1, 3, 5],
-    unavailableDates: [],
-    arrivalTime: "11:00 ص",
-    times: [
-      "11:00 ص",
-      "1:00 م",
-      "3:00 م",
-    ],
-  },
-
-  {
-    id: 7,
-    specialty: "علاج طبيعي",
-    name: "جهاد أبو المجد",
-    workDays: [0, 1, 2, 3, 4],
-    unavailableDates: [],
-    arrivalTime: "9:00 ص",
-    times: [
-      "9:00 ص",
-      "10:00 ص",
-      "11:00 ص",
-      "12:00 م",
-    ],
-  },
-
-  {
-    id: 8,
-    specialty: "عظام",
-    name: "محمود الغندور",
-    workDays: [0, 2, 4],
-    unavailableDates: [],
-    arrivalTime: "4:00 م",
-    times: [
-      "4:00 م",
-      "5:00 م",
-      "6:00 م",
-      "7:00 م",
-    ],
-  },
-
-  {
-    id: 9,
-    specialty: "جلدية",
-    name: "د. أحمد",
-    workDays: [1, 3, 5],
-    unavailableDates: [],
-    arrivalTime: "10:00 ص",
-    times: [
-      "10:00 ص",
-      "12:00 م",
-      "2:00 م",
-    ],
-  },
-];
-
-/* =================================================
-   CREATE FILES
-================================================= */
-
-function createFileIfMissing(file, defaultData = []) {
-  if (!fs.existsSync(file)) {
+function ensureFile(filePath, defaultValue = []) {
+  if (!fs.existsSync(filePath)) {
     fs.writeFileSync(
-      file,
-      JSON.stringify(defaultData, null, 2),
+      filePath,
+      JSON.stringify(defaultValue, null, 2),
       "utf8"
     );
   }
 }
 
-createFileIfMissing(bookingsFile);
-createFileIfMissing(resultsFile);
-createFileIfMissing(reviewsFile);
+ensureFile(BOOKINGS_FILE, []);
+ensureFile(RESULTS_FILE, []);
+ensureFile(REVIEWS_FILE, []);
+ensureFile(DOCTORS_FILE, []);
 
-if (!fs.existsSync(doctorsFile)) {
-  fs.writeFileSync(
-    doctorsFile,
-    JSON.stringify(defaultDoctors, null, 2),
-    "utf8"
-  );
-}
-
-if (!fs.existsSync(resultsFolder)) {
-  fs.mkdirSync(resultsFolder, {
-    recursive: true,
-  });
-}
-
-/* =================================================
-   JSON HELPERS
-================================================= */
-
-function readJson(file) {
+function readJSON(filePath, fallback = []) {
   try {
-    return JSON.parse(
-      fs.readFileSync(file, "utf8")
-    );
+    if (!fs.existsSync(filePath)) {
+      fs.writeFileSync(
+        filePath,
+        JSON.stringify(fallback, null, 2),
+        "utf8"
+      );
+
+      return fallback;
+    }
+
+    const content = fs.readFileSync(filePath, "utf8");
+
+    if (!content.trim()) {
+      return fallback;
+    }
+
+    return JSON.parse(content);
   } catch (error) {
     console.error("READ JSON ERROR:", error);
-    return [];
+    return fallback;
   }
 }
 
-function writeJson(file, data) {
+function writeJSON(filePath, data) {
   fs.writeFileSync(
-    file,
+    filePath,
     JSON.stringify(data, null, 2),
     "utf8"
   );
 }
 
-function getBookings() {
-  return readJson(bookingsFile);
+function generateId(prefix = "") {
+  return (
+    prefix +
+    Date.now().toString(36) +
+    crypto.randomBytes(4).toString("hex")
+  );
 }
 
-function saveBookings(data) {
-  writeJson(bookingsFile, data);
+function normalizePhone(phone) {
+  return String(phone || "")
+    .trim()
+    .replace(/\s+/g, "");
 }
 
-function getResults() {
-  return readJson(resultsFile);
+function isValidPhone(phone) {
+  return /^01[0-9]{9}$/.test(normalizePhone(phone));
 }
 
-function saveResults(data) {
-  writeJson(resultsFile, data);
-}
-
-function getReviews() {
-  return readJson(reviewsFile);
-}
-
-function saveReviews(data) {
-  writeJson(reviewsFile, data);
-}
-
-/* =================================================
-   GET DOCTORS
-   AUTO FIX OLD DOCTORS
-================================================= */
-
-function getDoctors() {
-  const doctors = readJson(doctorsFile);
-
-  let changed = false;
-
-  const fixedDoctors = doctors.map((doctor) => {
-    let arrivalTime = String(
-      doctor.arrivalTime || ""
-    ).trim();
-
-    if (!arrivalTime) {
-      arrivalTime = "10:00 ص";
-      changed = true;
-    }
-
-    const fixedDoctor = {
-      ...doctor,
-
-      workDays: Array.isArray(
-        doctor.workDays
-      )
-        ? doctor.workDays
-        : [],
-
-      unavailableDates: Array.isArray(
-        doctor.unavailableDates
-      )
-        ? doctor.unavailableDates
-        : [],
-
-      arrivalTime,
-
-      times: Array.isArray(
-        doctor.times
-      )
-        ? doctor.times
-        : [],
-    };
-
-    return fixedDoctor;
-  });
-
-  if (changed) {
-    writeJson(
-      doctorsFile,
-      fixedDoctors
-    );
-
-    console.log(
-      "✅ تم حفظ أوقات حضور الأطباء تلقائيًا"
-    );
-  }
-
-  return fixedDoctors;
-}
-
-function saveDoctors(data) {
-  writeJson(doctorsFile, data);
+function cleanText(value) {
+  return String(value || "").trim();
 }
 
 /* =================================================
-   ADMIN
+   ADMIN AUTH
 ================================================= */
 
 const ADMIN_USERNAME =
@@ -388,31 +142,512 @@ const ADMIN_PASSWORD =
 
 const adminTokens = new Set();
 
+function generateToken() {
+  return crypto.randomBytes(32).toString("hex");
+}
+
 function requireAdmin(req, res, next) {
-  const authHeader =
-    req.headers.authorization || "";
+  const authHeader = req.headers.authorization || "";
 
-  if (!authHeader) {
+  if (!authHeader.startsWith("Bearer ")) {
     return res.status(401).json({
       success: false,
-      message: "غير مصرح لك بالدخول",
+      message: "Unauthorized",
     });
   }
 
-  const token = authHeader.replace(
-    "Bearer ",
-    ""
-  );
+  const token = authHeader.substring(7);
 
-  if (!token || !adminTokens.has(token)) {
+  if (!adminTokens.has(token)) {
     return res.status(401).json({
       success: false,
-      message: "جلسة الدخول غير صالحة",
+      message: "Invalid or expired token",
     });
   }
+
+  req.adminToken = token;
 
   next();
 }
+
+/* =================================================
+   HEALTH
+================================================= */
+
+app.get("/", (req, res) => {
+  res.json({
+    success: true,
+    message: "Clinic API is running",
+    status: "online",
+  });
+});
+
+app.get("/api/health", (req, res) => {
+  res.json({
+    success: true,
+    message: "Backend is healthy",
+    time: new Date().toISOString(),
+  });
+});
+
+/* =================================================
+   ADMIN LOGIN
+================================================= */
+
+app.post("/api/admin/login", (req, res) => {
+  try {
+    const username = cleanText(req.body.username);
+    const password = String(req.body.password || "");
+
+    if (
+      username !== ADMIN_USERNAME ||
+      password !== ADMIN_PASSWORD
+    ) {
+      return res.status(401).json({
+        success: false,
+        message: "اسم المستخدم أو كلمة المرور غير صحيحة",
+      });
+    }
+
+    const token = generateToken();
+
+    adminTokens.add(token);
+
+    return res.json({
+      success: true,
+      message: "تم تسجيل الدخول بنجاح",
+      token,
+    });
+  } catch (error) {
+    console.error("ADMIN LOGIN ERROR:", error);
+
+    return res.status(500).json({
+      success: false,
+      message: "حدث خطأ أثناء تسجيل الدخول",
+    });
+  }
+});
+
+app.post(
+  "/api/admin/logout",
+  requireAdmin,
+  (req, res) => {
+    adminTokens.delete(req.adminToken);
+
+    return res.json({
+      success: true,
+      message: "تم تسجيل الخروج",
+    });
+  }
+);
+
+/* =================================================
+   BOOKINGS
+================================================= */
+
+app.get("/api/bookings", requireAdmin, (req, res) => {
+  try {
+    const bookings = readJSON(BOOKINGS_FILE, []);
+
+    return res.json({
+      success: true,
+      bookings,
+    });
+  } catch (error) {
+    console.error("GET BOOKINGS ERROR:", error);
+
+    return res.status(500).json({
+      success: false,
+      message: "حدث خطأ أثناء جلب الحجوزات",
+    });
+  }
+});
+
+/* =================================================
+   CREATE BOOKING
+================================================= */
+
+app.post("/api/bookings", (req, res) => {
+  try {
+    const {
+      name,
+      patientName,
+      phone,
+      specialty,
+      doctor,
+      doctorId,
+      date,
+      time,
+      appointmentDate,
+      appointmentTime,
+      notes,
+    } = req.body;
+
+    const finalName = cleanText(
+      patientName || name
+    );
+
+    const finalPhone = normalizePhone(phone);
+
+    if (!finalName) {
+      return res.status(400).json({
+        success: false,
+        message: "من فضلك اكتب اسم المريض",
+      });
+    }
+
+    if (!isValidPhone(finalPhone)) {
+      return res.status(400).json({
+        success: false,
+        message:
+          "رقم الهاتف يجب أن يبدأ بـ 01 ويتكون من 11 رقم",
+      });
+    }
+
+    if (!cleanText(specialty)) {
+      return res.status(400).json({
+        success: false,
+        message: "من فضلك اختر التخصص",
+      });
+    }
+
+    if (!cleanText(doctor)) {
+      return res.status(400).json({
+        success: false,
+        message: "من فضلك اختر الطبيب",
+      });
+    }
+
+    const bookings = readJSON(BOOKINGS_FILE, []);
+
+    const finalDate = cleanText(
+      appointmentDate || date
+    );
+
+    const finalTime = cleanText(
+      appointmentTime || time
+    );
+
+    const booking = {
+      id: generateId("booking_"),
+      patientName: finalName,
+      name: finalName,
+      phone: finalPhone,
+      specialty: cleanText(specialty),
+      doctor: cleanText(doctor),
+      doctorId: doctorId || null,
+      date: finalDate,
+      time: finalTime,
+      appointmentDate: finalDate,
+      appointmentTime: finalTime,
+      notes: cleanText(notes),
+      status: "requested",
+      createdAt: new Date().toISOString(),
+      confirmedAt: null,
+      cancelledAt: null,
+    };
+
+    bookings.push(booking);
+
+    writeJSON(BOOKINGS_FILE, bookings);
+
+    return res.status(201).json({
+      success: true,
+      message: "تم الحجز بنجاح",
+      booking,
+    });
+  } catch (error) {
+    console.error("CREATE BOOKING ERROR:", error);
+
+    return res.status(500).json({
+      success: false,
+      message: "حدث خطأ أثناء إنشاء الحجز",
+    });
+  }
+});
+
+/* =================================================
+   TRACK BOOKING
+================================================= */
+
+app.get("/api/bookings/track/:id", (req, res) => {
+  try {
+    const bookings = readJSON(BOOKINGS_FILE, []);
+
+    const booking = bookings.find(
+      (item) => String(item.id) === String(req.params.id)
+    );
+
+    if (!booking) {
+      return res.status(404).json({
+        success: false,
+        message: "الحجز غير موجود",
+      });
+    }
+
+    return res.json({
+      success: true,
+      booking,
+    });
+  } catch (error) {
+    console.error("TRACK BOOKING ERROR:", error);
+
+    return res.status(500).json({
+      success: false,
+      message: "حدث خطأ أثناء البحث عن الحجز",
+    });
+  }
+});
+
+/* =================================================
+   CONFIRM BOOKING
+================================================= */
+
+app.put(
+  "/api/bookings/:id/confirm",
+  requireAdmin,
+  (req, res) => {
+    try {
+      const bookings = readJSON(BOOKINGS_FILE, []);
+
+      const index = bookings.findIndex(
+        (item) =>
+          String(item.id) === String(req.params.id)
+      );
+
+      if (index === -1) {
+        return res.status(404).json({
+          success: false,
+          message: "الحجز غير موجود",
+        });
+      }
+
+      bookings[index].status = "confirmed";
+      bookings[index].confirmedAt =
+        new Date().toISOString();
+
+      writeJSON(BOOKINGS_FILE, bookings);
+
+      return res.json({
+        success: true,
+        message: "تم تأكيد الحجز",
+        booking: bookings[index],
+      });
+    } catch (error) {
+      console.error("CONFIRM BOOKING ERROR:", error);
+
+      return res.status(500).json({
+        success: false,
+        message: "حدث خطأ أثناء تأكيد الحجز",
+      });
+    }
+  }
+);
+
+/* =================================================
+   CANCEL BOOKING
+================================================= */
+
+app.put(
+  "/api/bookings/:id/cancel",
+  requireAdmin,
+  (req, res) => {
+    try {
+      const bookings = readJSON(BOOKINGS_FILE, []);
+
+      const index = bookings.findIndex(
+        (item) =>
+          String(item.id) === String(req.params.id)
+      );
+
+      if (index === -1) {
+        return res.status(404).json({
+          success: false,
+          message: "الحجز غير موجود",
+        });
+      }
+
+      bookings[index].status = "cancelled";
+      bookings[index].cancelledAt =
+        new Date().toISOString();
+
+      writeJSON(BOOKINGS_FILE, bookings);
+
+      return res.json({
+        success: true,
+        message: "تم إلغاء الحجز",
+        booking: bookings[index],
+      });
+    } catch (error) {
+      console.error("CANCEL BOOKING ERROR:", error);
+
+      return res.status(500).json({
+        success: false,
+        message: "حدث خطأ أثناء إلغاء الحجز",
+      });
+    }
+  }
+);
+
+/* =================================================
+   DELETE BOOKING
+================================================= */
+
+app.delete(
+  "/api/bookings/:id",
+  requireAdmin,
+  (req, res) => {
+    try {
+      const bookings = readJSON(BOOKINGS_FILE, []);
+
+      const index = bookings.findIndex(
+        (item) =>
+          String(item.id) === String(req.params.id)
+      );
+
+      if (index === -1) {
+        return res.status(404).json({
+          success: false,
+          message: "الحجز غير موجود",
+        });
+      }
+
+      const deletedBooking = bookings[index];
+
+      bookings.splice(index, 1);
+
+      writeJSON(BOOKINGS_FILE, bookings);
+
+      return res.json({
+        success: true,
+        message: "تم حذف الحجز",
+        booking: deletedBooking,
+      });
+    } catch (error) {
+      console.error("DELETE BOOKING ERROR:", error);
+
+      return res.status(500).json({
+        success: false,
+        message: "حدث خطأ أثناء حذف الحجز",
+      });
+    }
+  }
+);
+
+/* =================================================
+   RESULTS SEARCH
+================================================= */
+
+app.get("/api/results/search", (req, res) => {
+  try {
+    const phone = normalizePhone(req.query.phone);
+
+    if (!phone) {
+      return res.status(400).json({
+        success: false,
+        message: "من فضلك اكتب رقم الهاتف",
+      });
+    }
+
+    const results = readJSON(RESULTS_FILE, []);
+
+    const patientResults = results.filter(
+      (item) =>
+        normalizePhone(item.phone) === phone
+    );
+
+    return res.json({
+      success: true,
+      results: patientResults,
+    });
+  } catch (error) {
+    console.error(
+      "SEARCH RESULTS ERROR:",
+      error
+    );
+
+    return res.status(500).json({
+      success: false,
+      message: "حدث خطأ أثناء البحث عن النتائج",
+    });
+  }
+});
+
+/* =================================================
+   RESULT PDF
+================================================= */
+
+app.get("/api/results/:id/pdf", (req, res) => {
+  try {
+    const results = readJSON(RESULTS_FILE, []);
+
+    const result = results.find(
+      (item) =>
+        String(item.id) === String(req.params.id)
+    );
+
+    if (!result) {
+      return res.status(404).json({
+        success: false,
+        message: "النتيجة غير موجودة",
+      });
+    }
+
+    if (!result.fileName) {
+      return res.status(404).json({
+        success: false,
+        message: "ملف النتيجة غير موجود",
+      });
+    }
+
+    const filePath = path.join(
+      PDF_DIR,
+      result.fileName
+    );
+
+    if (!fs.existsSync(filePath)) {
+      return res.status(404).json({
+        success: false,
+        message: "ملف PDF غير موجود",
+      });
+    }
+
+    return res.sendFile(filePath);
+  } catch (error) {
+    console.error("RESULT PDF ERROR:", error);
+
+    return res.status(500).json({
+      success: false,
+      message: "حدث خطأ أثناء فتح النتيجة",
+    });
+  }
+});
+
+/* =================================================
+   ADMIN RESULTS
+================================================= */
+
+app.get(
+  "/api/admin/results",
+  requireAdmin,
+  (req, res) => {
+    try {
+      const results = readJSON(RESULTS_FILE, []);
+
+      return res.json({
+        success: true,
+        results,
+      });
+    } catch (error) {
+      console.error("GET ADMIN RESULTS ERROR:", error);
+
+      return res.status(500).json({
+        success: false,
+        message: "حدث خطأ أثناء جلب النتائج",
+      });
+    }
+  }
+);
 
 /* =================================================
    MULTER
@@ -420,20 +655,17 @@ function requireAdmin(req, res, next) {
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, resultsFolder);
+    cb(null, PDF_DIR);
   },
 
   filename: function (req, file, cb) {
-    const extension = path
-      .extname(file.originalname)
-      .toLowerCase();
+    const extension =
+      path.extname(file.originalname) || ".pdf";
 
-    const uniqueName =
-      `result-${Date.now()}-${crypto
-        .randomBytes(6)
-        .toString("hex")}${extension}`;
+    const fileName =
+      generateId("result_") + extension;
 
-    cb(null, uniqueName);
+    cb(null, fileName);
   },
 });
 
@@ -445,16 +677,15 @@ const upload = multer({
   },
 
   fileFilter: function (req, file, cb) {
-    const extension = path
-      .extname(file.originalname)
-      .toLowerCase();
+    const extension =
+      path.extname(file.originalname).toLowerCase();
 
     if (
-      extension !== ".pdf" ||
+      extension !== ".pdf" &&
       file.mimetype !== "application/pdf"
     ) {
       return cb(
-        new Error("يسمح برفع ملفات PDF فقط")
+        new Error("PDF files only")
       );
     }
 
@@ -463,41 +694,161 @@ const upload = multer({
 });
 
 /* =================================================
-   HOME
+   UPLOAD RESULT
 ================================================= */
 
-app.get("/", (req, res) => {
-  res.json({
-    success: true,
-    message: "Mabraf Al-Falaki API is running",
-    status: "online",
-    port: PORT,
-  });
-});
+app.post(
+  "/api/admin/results/upload",
+  requireAdmin,
+  upload.single("file"),
+  (req, res) => {
+    try {
+      const {
+        patientName,
+        name,
+        phone,
+        title,
+        description,
+      } = req.body;
+
+      if (!req.file) {
+        return res.status(400).json({
+          success: false,
+          message: "من فضلك اختر ملف PDF",
+        });
+      }
+
+      const finalPatientName = cleanText(
+        patientName || name
+      );
+
+      const finalPhone = normalizePhone(phone);
+
+      if (!finalPatientName) {
+        fs.unlinkSync(req.file.path);
+
+        return res.status(400).json({
+          success: false,
+          message: "من فضلك اكتب اسم المريض",
+        });
+      }
+
+      if (!isValidPhone(finalPhone)) {
+        fs.unlinkSync(req.file.path);
+
+        return res.status(400).json({
+          success: false,
+          message:
+            "رقم الهاتف يجب أن يبدأ بـ 01 ويتكون من 11 رقم",
+        });
+      }
+
+      const results = readJSON(RESULTS_FILE, []);
+
+      const result = {
+        id: generateId("result_"),
+        patientName: finalPatientName,
+        name: finalPatientName,
+        phone: finalPhone,
+        title: cleanText(title),
+        description: cleanText(description),
+        fileName: req.file.filename,
+        originalFileName: req.file.originalname,
+        createdAt: new Date().toISOString(),
+      };
+
+      results.push(result);
+
+      writeJSON(RESULTS_FILE, results);
+
+      return res.status(201).json({
+        success: true,
+        message: "تم رفع النتيجة بنجاح",
+        result,
+      });
+    } catch (error) {
+      console.error(
+        "UPLOAD RESULT ERROR:",
+        error
+      );
+
+      if (req.file?.path && fs.existsSync(req.file.path)) {
+        try {
+          fs.unlinkSync(req.file.path);
+        } catch (deleteError) {
+          console.error(
+            "DELETE UPLOAD ERROR:",
+            deleteError
+          );
+        }
+      }
+
+      return res.status(500).json({
+        success: false,
+        message: "حدث خطأ أثناء رفع النتيجة",
+      });
+    }
+  }
+);
 
 /* =================================================
-   HEALTH
+   DELETE RESULT
 ================================================= */
 
-app.get("/api/health", (req, res) => {
-  res.json({
-    success: true,
-    message: "Backend is healthy",
-    status: "online",
-    time: new Date().toISOString(),
-  });
-});
+app.delete(
+  "/api/admin/results/:id",
+  requireAdmin,
+  (req, res) => {
+    try {
+      const results = readJSON(RESULTS_FILE, []);
 
-/* =================================================
-   ADMIN LOGIN
-================================================= */
+      const index = results.findIndex(
+        (item) =>
+          String(item.id) === String(req.params.id)
+      );
 
-app.post("/api/admin/login", (req, res) => {
-  const {
-    username,
-    password,
-  } = req.body || {};
+      if (index === -1) {
+        return res.status(404).json({
+          success: false,
+          message: "النتيجة غير موجودة",
+        });
+      }
 
+      const deletedResult = results[index];
+
+      if (deletedResult.fileName) {
+        const filePath = path.join(
+          PDF_DIR,
+          deletedResult.fileName
+        );
+
+        if (fs.existsSync(filePath)) {
+          fs.unlinkSync(filePath);
+        }
+      }
+
+      results.splice(index, 1);
+
+      writeJSON(RESULTS_FILE, results);
+
+      return res.json({
+        success: true,
+        message: "تم حذف النتيجة",
+        result: deletedResult,
+      });
+    } catch (error) {
+      console.error(
+        "DELETE RESULT ERROR:",
+        error
+      );
+
+      return res.status(500).json({
+        success: false,
+        message: "حدث خطأ أثناء حذف النتيجة",
+      });
+    }
+  }
+);
   if (
     username !== ADMIN_USERNAME ||
     password !== ADMIN_PASSWORD
@@ -999,9 +1350,7 @@ app.post(
           message:
             "الحجز غير موجود",
         });
-      }
-
-      if (
+               if (
         booking.status ===
         "confirmed"
       ) {
@@ -1241,8 +1590,6 @@ app.get(
         "SEARCH RESULTS ERROR:",
         error
       );
-               error
-      );
 
       res.status(500).json({
         success: false,
@@ -1301,14 +1648,29 @@ app.get(
 ================================================= */
 
 app.get(
-  "/api/results",
+  "/api/admin/results",
   requireAdmin,
   (req, res) => {
-    res.json({
-      success: true,
-      results:
-        getResults(),
-    });
+    try {
+      const results =
+        getResults();
+
+      res.json({
+        success: true,
+        results,
+      });
+    } catch (error) {
+      console.error(
+        "GET RESULTS ADMIN ERROR:",
+        error
+      );
+
+      res.status(500).json({
+        success: false,
+        message:
+          "حدث خطأ أثناء جلب النتائج",
+      });
+    }
   }
 );
 
@@ -1317,58 +1679,11 @@ app.get(
 ================================================= */
 
 app.post(
-  "/api/results/upload",
+  "/api/admin/results",
   requireAdmin,
   upload.single("file"),
   (req, res) => {
     try {
-      const patientName =
-        String(
-          req.body.patientName ||
-            ""
-        ).trim();
-
-      const phone =
-        String(
-          req.body.phone ||
-            ""
-        ).trim();
-
-      if (
-        !patientName ||
-        !phone
-      ) {
-        if (req.file) {
-          fs.unlinkSync(
-            req.file.path
-          );
-        }
-
-        return res.status(400).json({
-          success: false,
-          message:
-            "اسم المريض ورقم الهاتف مطلوبان",
-        });
-      }
-
-      if (
-        !/^01[0-9]{9}$/.test(
-          phone
-        )
-      ) {
-        if (req.file) {
-          fs.unlinkSync(
-            req.file.path
-          );
-        }
-
-        return res.status(400).json({
-          success: false,
-          message:
-            "رقم الهاتف غير صحيح",
-        });
-      }
-
       if (!req.file) {
         return res.status(400).json({
           success: false,
@@ -1377,39 +1692,81 @@ app.post(
         });
       }
 
+      const patientName =
+        String(
+          req.body.patientName ||
+            req.body.name ||
+            ""
+        ).trim();
+
+      const phone =
+        String(
+          req.body.phone || ""
+        ).trim();
+
+      const title =
+        String(
+          req.body.title ||
+            "نتيجة تحليل"
+        ).trim();
+
+      if (!patientName) {
+        fs.unlinkSync(
+          req.file.path
+        );
+
+        return res.status(400).json({
+          success: false,
+          message:
+            "من فضلك أدخل اسم المريض",
+        });
+      }
+
+      if (!/^01[0-9]{9}$/.test(phone)) {
+        fs.unlinkSync(
+          req.file.path
+        );
+
+        return res.status(400).json({
+          success: false,
+          message:
+            "رقم الهاتف يجب أن يبدأ بـ 01 ويكون 11 رقمًا",
+        });
+      }
+
       const results =
         getResults();
 
-      const newResult = {
+      const result = {
         id: Date.now(),
 
         patientName,
 
+        name: patientName,
+
         phone,
+
+        title,
 
         fileName:
           req.file.filename,
 
-        originalFileName:
+        originalName:
           req.file.originalname,
-
-        fileSize:
-          req.file.size,
 
         createdAt:
           new Date().toISOString(),
       };
 
-      results.push(newResult);
+      results.push(result);
 
       saveResults(results);
 
       res.status(201).json({
         success: true,
         message:
-          "تم رفع نتيجة التحليل بنجاح",
-        result:
-          newResult,
+          "تم رفع النتيجة بنجاح",
+        result,
       });
     } catch (error) {
       console.error(
@@ -1417,25 +1774,29 @@ app.post(
         error
       );
 
-      if (req.file) {
+      if (
+        req.file &&
+        req.file.path &&
+        fs.existsSync(
+          req.file.path
+        )
+      ) {
         try {
-          if (
-            fs.existsSync(
-              req.file.path
-            )
-          ) {
-            fs.unlinkSync(
-              req.file.path
-            );
-          }
-        } catch {}
+          fs.unlinkSync(
+            req.file.path
+          );
+        } catch (deleteError) {
+          console.error(
+            "DELETE UPLOADED FILE ERROR:",
+            deleteError
+          );
+        }
       }
 
       res.status(500).json({
         success: false,
         message:
-          error.message ||
-          "حدث خطأ أثناء رفع نتيجة التحليل",
+          "حدث خطأ أثناء رفع النتيجة",
       });
     }
   }
@@ -1446,7 +1807,7 @@ app.post(
 ================================================= */
 
 app.delete(
-  "/api/results/:id",
+  "/api/admin/results/:id",
   requireAdmin,
   (req, res) => {
     try {
@@ -1466,8 +1827,26 @@ app.delete(
         return res.status(404).json({
           success: false,
           message:
-            "نتيجة التحليل غير موجودة",
+            "النتيجة غير موجودة",
         });
+      }
+
+      if (result.fileName) {
+        const filePath =
+          path.join(
+            resultsFolder,
+            path.basename(
+              result.fileName
+            )
+          );
+
+        if (
+          fs.existsSync(filePath)
+        ) {
+          fs.unlinkSync(
+            filePath
+          );
+        }
       }
 
       const newResults =
@@ -1476,30 +1855,12 @@ app.delete(
             item.id !== id
         );
 
-      const filePath =
-        path.join(
-          resultsFolder,
-          path.basename(
-            result.fileName
-          )
-        );
-
-      if (
-        fs.existsSync(
-          filePath
-        )
-      ) {
-        fs.unlinkSync(
-          filePath
-        );
-      }
-
       saveResults(newResults);
 
       res.json({
         success: true,
         message:
-          "تم حذف نتيجة التحليل بنجاح",
+          "تم حذف النتيجة بنجاح",
       });
     } catch (error) {
       console.error(
@@ -1510,7 +1871,7 @@ app.delete(
       res.status(500).json({
         success: false,
         message:
-          "حدث خطأ أثناء حذف نتيجة التحليل",
+          "حدث خطأ أثناء حذف النتيجة",
       });
     }
   }
@@ -1523,14 +1884,116 @@ app.delete(
 app.get(
   "/api/reviews",
   (req, res) => {
-    res.json({
-      success: true,
-      reviews:
-        getReviews(),
-    });
+    try {
+      const reviews =
+        getReviews();
+
+      res.json({
+        success: true,
+        reviews,
+      });
+    } catch (error) {
+      console.error(
+        "GET REVIEWS ERROR:",
+        error
+      );
+
+      res.status(500).json({
+        success: false,
+        message:
+          "حدث خطأ أثناء جلب التقييمات",
+      });
+    }
   }
 );
 
+app.post(
+  "/api/reviews",
+  (req, res) => {
+    try {
+      const name =
+        String(
+          req.body.name || ""
+        ).trim();
+
+      const rating =
+        Number(
+          req.body.rating
+        );
+
+      const comment =
+        String(
+          req.body.comment || ""
+        ).trim();
+
+      if (!name) {
+        return res.status(400).json({
+          success: false,
+          message:
+            "من فضلك اكتب اسمك",
+        });
+      }
+
+      if (
+        !Number.isInteger(rating) ||
+        rating < 1 ||
+        rating > 5
+      ) {
+        return res.status(400).json({
+          success: false,
+          message:
+            "التقييم يجب أن يكون من 1 إلى 5",
+        });
+      }
+
+      if (!comment) {
+        return res.status(400).json({
+          success: false,
+          message:
+            "من فضلك اكتب تعليقك",
+        });
+      }
+
+      const reviews =
+        getReviews();
+
+      const review = {
+        id: Date.now(),
+
+        name,
+
+        rating,
+
+        comment,
+
+        createdAt:
+          new Date().toISOString(),
+      };
+
+      reviews.push(review);
+
+      saveReviews(reviews);
+
+      res.status(201).json({
+        success: true,
+        message:
+          "تم إرسال تقييمك بنجاح",
+        review,
+      });
+    } catch (error) {
+      console.error(
+        "CREATE REVIEW ERROR:",
+        error
+      );
+
+      res.status(500).json({
+        success: false,
+        message:
+          "حدث خطأ أثناء إرسال التقييم",
+      });
+    }
+  }
+);
 app.post(
   "/api/reviews",
   (req, res) => {
@@ -1741,7 +2204,7 @@ app.post(
             ? [
                 ...new Set(
                   workDays.map(Number)
-                                         ),
+                ),
               ].filter(
                 (day) =>
                   Number.isInteger(day) &&
@@ -1920,6 +2383,45 @@ app.put(
           ];
       }
 
+      if (
+        Array.isArray(
+          body.unavailableDates
+        )
+      ) {
+        doctor.unavailableDates =
+          [
+            ...new Set(
+              body.unavailableDates.map(
+                String
+              )
+            ),
+          ];
+      }
+
+      saveDoctors(
+        doctors
+      );
+
+      res.json({
+        success: true,
+        message:
+          "تم تحديث بيانات الطبيب بنجاح",
+        doctor,
+      });
+    } catch (error) {
+      console.error(
+        "UPDATE DOCTOR ERROR:",
+        error
+      );
+
+      res.status(500).json({
+        success: false,
+        message:
+          "حدث خطأ أثناء تحديث الطبيب",
+      });
+    }
+  }
+);
       if (
         Array.isArray(
           body.unavailableDates
@@ -2122,48 +2624,6 @@ app.delete(
         success: true,
         message:
           "تم فتح هذا اليوم",
-        doctor,
-      });
-    } catch (error) {
-      console.error(
-        "REMOVE UNAVAILABLE DATE ERROR:",
-        error
-      );
-
-      res.status(500).json({
-        success: false,
-        message:
-          "حدث خطأ أثناء فتح اليوم",
-      });
-    }
-  }
-);
-      if (!doctor) {
-        return res.status(404).json({
-          success: false,
-          message:
-            "الطبيب غير موجود",
-        });
-      }
-
-      doctor.unavailableDates =
-        Array.isArray(
-          doctor.unavailableDates
-        )
-          ? doctor.unavailableDates.filter(
-              (item) =>
-                item !== date
-            )
-          : [];
-
-      saveDoctors(
-        doctors
-      );
-
-      res.json({
-        success: true,
-        message:
-          "تم فتح اليوم مرة أخرى",
         doctor,
       });
     } catch (error) {
